@@ -138,6 +138,16 @@ class home extends CI_Controller {
 	}
 	// Laporan
 
+	// TRX
+	public function tagihansiswa()
+	{
+		$this->load->view('V_Transaksi/view_tagihan');
+	}
+	public function tambahsiswa()
+	{
+		$this->load->view('V_Transaksi/add_tagihan');
+	}
+	// TRX
 	public function lap_attlog()
 	{
 		$this->load->view('V_Laporan/AttLog');

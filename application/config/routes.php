@@ -145,6 +145,10 @@ $route['kelas'] = 'Home/mstr_kelas';
 $route['siswa'] = 'Home/mstr_siswa';
 $route['poskeu'] = 'Home/mstr_poskeuangan';
 $route['jenistagihan'] = 'Home/mstr_jenistagihan';
+
+// Transaksi
+$route['tagihan'] = 'Home/tagihansiswa';
+$route['addsiswa'] = 'Home/tambahsiswa';
 // Laporan
 $route['attlog'] = 'Home/lap_attlog';
 $route['rekapabsen'] = 'Home/lap_rekapabsen';

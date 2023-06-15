@@ -32,4 +32,12 @@ class GlobalVar extends CI_Model
 		";
 		return $this->db->query($data);
 	}
+	public function GetNoTransaksi($prefix, $table)
+	{
+		$SQL = "SELECT COUNT(*) LastRow FROM ".$table." WHERE LEFT(NoTransaksi, LENGTH('".$prefix."')) = '".$prefix."'";
+
+		$data = $this->db->query($SQL);
+
+		return $data->num_rows();
+	}
 }

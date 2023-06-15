@@ -11,7 +11,7 @@
  Target Server Version : 100240
  File Encoding         : 65001
 
- Date: 12/06/2023 21:35:32
+ Date: 15/06/2023 22:51:26
 */
 
 SET NAMES utf8mb4;
@@ -51,7 +51,7 @@ INSERT INTO `permission` VALUES (8, 'Keuangan', '', ' ', '4', b'0', b'1', 8, b'1
 INSERT INTO `permission` VALUES (9, 'Pos Keuangan', 'poskeu', ' ', '4', b'0', b'0', 9, b'1', NULL, NULL, NULL);
 INSERT INTO `permission` VALUES (10, 'Jenis Tagihan Siswa', 'jenistagihan', '', '4', b'0', b'0', 10, b'1', NULL, NULL, NULL);
 INSERT INTO `permission` VALUES (11, 'Transaksi', '', 'fa-pencil', '0', b'1', b'0', 11, b'1', NULL, NULL, NULL);
-INSERT INTO `permission` VALUES (12, 'Tagihan Siswa', '', '', '11', b'0', b'0', 12, b'1', NULL, NULL, NULL);
+INSERT INTO `permission` VALUES (12, 'Tagihan Siswa', 'tagihan', '', '11', b'0', b'0', 12, b'1', NULL, NULL, NULL);
 INSERT INTO `permission` VALUES (13, 'Pembayaran Siswa', '', ' ', '11', b'0', b'0', 13, b'1', NULL, NULL, NULL);
 INSERT INTO `permission` VALUES (14, 'Keuangan', '', ' ', '11', b'0', b'1', 14, b'1', NULL, NULL, NULL);
 INSERT INTO `permission` VALUES (15, 'Serah Terima Uang', '', '', '11', b'0', b'0', 15, b'1', NULL, NULL, NULL);
@@ -104,6 +104,71 @@ CREATE TABLE `roles`  (
 -- Records of roles
 -- ----------------------------
 INSERT INTO `roles` VALUES (1, 'Admin');
+
+-- ----------------------------
+-- Table structure for tagihandetail
+-- ----------------------------
+DROP TABLE IF EXISTS `tagihandetail`;
+CREATE TABLE `tagihandetail`  (
+  `NoTransaksi` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `LineNumber` int(11) NOT NULL,
+  `KodeItemTagihan` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `NamaItemTagihan` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `JumlahTagihan` double(16, 2) NOT NULL,
+  `LastUpdatedOn` datetime(0) NULL DEFAULT NULL,
+  `LastUpdatedBy` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tagihandetail
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tagihanheader
+-- ----------------------------
+DROP TABLE IF EXISTS `tagihanheader`;
+CREATE TABLE `tagihanheader`  (
+  `NoTransaksi` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `TglTransaksi` date NOT NULL,
+  `TglPencatatan` datetime(0) NOT NULL,
+  `TglTagihan` date NOT NULL,
+  `TglJatuhTempo` date NOT NULL,
+  `TahunAjaran` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `NISSiswa` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `NamaSiswa` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `Keterangan` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `LastUpdatedOn` datetime(0) NULL DEFAULT NULL,
+  `LastUpdatedBy` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`NoTransaksi`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tagihanheader
+-- ----------------------------
+INSERT INTO `tagihanheader` VALUES ('2023060000100', '2023-06-15', '2023-06-15 05:50:03', '2023-07-01', '2023-07-08', '2022-2023', '1', '123', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000101', '2023-06-15', '2023-06-15 05:50:03', '2023-07-01', '2023-07-08', '2022-2023', '2', '456', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000110', '2023-06-15', '2023-06-15 05:50:03', '2023-08-01', '2023-08-08', '2022-2023', '1', '123', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('20230600001100', '2023-06-15', '2023-06-15 05:50:03', '2024-05-01', '2024-05-08', '2022-2023', '1', '123', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('20230600001101', '2023-06-15', '2023-06-15 05:50:03', '2024-05-01', '2024-05-08', '2022-2023', '2', '456', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000111', '2023-06-15', '2023-06-15 05:50:03', '2023-08-01', '2023-08-08', '2022-2023', '2', '456', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('20230600001110', '2023-06-15', '2023-06-15 05:50:03', '2024-06-01', '2024-06-08', '2022-2023', '1', '123', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('20230600001111', '2023-06-15', '2023-06-15 05:50:03', '2024-06-01', '2024-06-08', '2022-2023', '2', '456', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000120', '2023-06-15', '2023-06-15 05:50:03', '2023-09-01', '2023-09-08', '2022-2023', '1', '123', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000121', '2023-06-15', '2023-06-15 05:50:03', '2023-09-01', '2023-09-08', '2022-2023', '2', '456', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000130', '2023-06-15', '2023-06-15 05:50:03', '2023-10-01', '2023-10-08', '2022-2023', '1', '123', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000131', '2023-06-15', '2023-06-15 05:50:03', '2023-10-01', '2023-10-08', '2022-2023', '2', '456', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000140', '2023-06-15', '2023-06-15 05:50:03', '2023-11-01', '2023-11-08', '2022-2023', '1', '123', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000141', '2023-06-15', '2023-06-15 05:50:03', '2023-11-01', '2023-11-08', '2022-2023', '2', '456', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000150', '2023-06-15', '2023-06-15 05:50:03', '2023-12-01', '2023-12-08', '2022-2023', '1', '123', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000151', '2023-06-15', '2023-06-15 05:50:03', '2023-12-01', '2023-12-08', '2022-2023', '2', '456', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000160', '2023-06-15', '2023-06-15 05:50:03', '2024-01-01', '2024-01-08', '2022-2023', '1', '123', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000161', '2023-06-15', '2023-06-15 05:50:03', '2024-01-01', '2024-01-08', '2022-2023', '2', '456', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000170', '2023-06-15', '2023-06-15 05:50:03', '2024-02-01', '2024-02-08', '2022-2023', '1', '123', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000171', '2023-06-15', '2023-06-15 05:50:03', '2024-02-01', '2024-02-08', '2022-2023', '2', '456', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000180', '2023-06-15', '2023-06-15 05:50:03', '2024-03-01', '2024-03-08', '2022-2023', '1', '123', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000181', '2023-06-15', '2023-06-15 05:50:03', '2024-03-01', '2024-03-08', '2022-2023', '2', '456', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000190', '2023-06-15', '2023-06-15 05:50:03', '2024-04-01', '2024-04-08', '2022-2023', '1', '123', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000191', '2023-06-15', '2023-06-15 05:50:03', '2024-04-01', '2024-04-08', '2022-2023', '2', '456', '', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tjenistagihan
