@@ -20,6 +20,16 @@
           <div class="x_content">
             <div class="row">
               <div class="col-md-3 col-sm-12  form-group">
+                Tgl Awal
+                <input type="date" id="FromDate" name="FromDate" class="form-control">
+              </div>
+              <div class="col-md-3 col-sm-12  form-group">
+                Tgl Akhir
+                <input type="date" id="ToDate" name="ToDate" class="form-control">
+              </div>
+
+              <div class="col-md-3 col-sm-12  form-group">
+                Jurusan
                 <select id="Jurusan" name="Jurusan" class="form-control">
                   <option value="">Pilih Jurusan..</option>
                   <?php
@@ -33,6 +43,7 @@
               </div>
 
               <div class="col-md-3 col-sm-12  form-group">
+                Kelas
                 <select id="Kelas" name="Kelas" class="form-control">
                   <option value="">Pilih Kelas..</option>
                   <?php
@@ -45,9 +56,18 @@
                 </select>
               </div>
 
-              <div class="col-md-6 col-sm-12  form-group">
+              <div class="col-md-2 col-sm-12  form-group">
+                Status Document
+                <select id="Status" name="Status" class="form-control">
+                  <option value="Open">Open</option>
+                  <option value="Close">Close</option>
+                </select>
+              </div>
+
+              <div class="col-md-4 col-sm-12  form-group">
                 <!-- <input type="text" placeholder="NIK / Nama" class="form-control"> -->
-                <button class="btn btn-primary">Cari Data</button>
+                <br>
+                <button class="btn btn-primary" id="btSearch">Cari Data</button>
                 <a class="btn btn-danger" href="<?php echo base_url().'addsiswa' ?>">Tambah Data</a>
               </div>
               <div class="col-md-12 col-sm-12  form-group">
@@ -79,65 +99,88 @@
 ?>
 <script type="text/javascript">
   $(function () {
-        $(document).ready(function () {
-          var where_field = '';
-          var where_value = '';
-          var table = 'users';
+    $(document).ready(function () {
+      ResetData();
+      var where_field = '';
+      var where_value = '';
+      var table = 'users';
 
-          $.ajax({
-            type: "post",
-            url: "<?=base_url()?>C_JenisTagihan/Read",
-            data: {'id':''},
-            dataType: "json",
-            success: function (response) {
-              bindGrid(response.data);
-              bindGridDetail(response.data);
+      $.ajax({
+        type: "post",
+        url: "<?=base_url()?>C_TagihanSiswa/ReadHeader",
+        data: {
+          'FromDate':$('#FromDate').val(),
+          'ToDate':$('#ToDate').val(),
+          'Kelas':$('#Kelas').val(),
+          'Jurusan':$('#Jurusan').val(),
+          'Status':$('#Status').val(),
+        },
+        dataType: "json",
+        success: function (response) {
+          bindGrid(response.data);
+        }
+      });
+    });
+    $('#post_').submit(function (e) {
+      $('#btn_Save').text('Tunggu Sebentar.....');
+      $('#btn_Save').attr('disabled',true);
+
+      e.preventDefault();
+      var me = $(this);
+
+      $.ajax({
+            type    :'post',
+            url     : '<?=base_url()?>C_JenisTagihan/CRUD',
+            data    : me.serialize(),
+            dataType: 'json',
+            success : function (response) {
+              if(response.success == true){
+                $('#modal_').modal('toggle');
+                Swal.fire({
+                  type: 'success',
+                  title: 'Horay..',
+                  text: 'Data Berhasil disimpan!',
+                  // footer: '<a href>Why do I have this issue?</a>'
+                }).then((result)=>{
+                  location.reload();
+                });
+              }
+              else{
+                $('#modal_').modal('toggle');
+                Swal.fire({
+                  type: 'error',
+                  title: 'Woops...',
+                  text: response.message,
+                  // footer: '<a href>Why do I have this issue?</a>'
+                }).then((result)=>{
+                  $('#modal_').modal('show');
+                  $('#btn_Save').text('Save');
+                  $('#btn_Save').attr('disabled',false);
+                });
+              }
             }
           });
         });
-        $('#post_').submit(function (e) {
-          $('#btn_Save').text('Tunggu Sebentar.....');
-          $('#btn_Save').attr('disabled',true);
-
-          e.preventDefault();
-          var me = $(this);
-
-          $.ajax({
-                type    :'post',
-                url     : '<?=base_url()?>C_JenisTagihan/CRUD',
-                data    : me.serialize(),
-                dataType: 'json',
-                success : function (response) {
-                  if(response.success == true){
-                    $('#modal_').modal('toggle');
-                    Swal.fire({
-                      type: 'success',
-                      title: 'Horay..',
-                      text: 'Data Berhasil disimpan!',
-                      // footer: '<a href>Why do I have this issue?</a>'
-                    }).then((result)=>{
-                      location.reload();
-                    });
-                  }
-                  else{
-                    $('#modal_').modal('toggle');
-                    Swal.fire({
-                      type: 'error',
-                      title: 'Woops...',
-                      text: response.message,
-                      // footer: '<a href>Why do I have this issue?</a>'
-                    }).then((result)=>{
-                      $('#modal_').modal('show');
-                      $('#btn_Save').text('Save');
-                      $('#btn_Save').attr('disabled',false);
-                    });
-                  }
-                }
-              });
-            });
-        $('.close').click(function() {
-          location.reload();
-        });
+    $('.close').click(function() {
+      location.reload();
+    });
+    $('#btSearch').click(function () {
+      $.ajax({
+        type: "post",
+        url: "<?=base_url()?>C_TagihanSiswa/ReadHeader",
+        data: {
+          'FromDate':$('#FromDate').val(),
+          'ToDate':$('#ToDate').val(),
+          'Kelas':$('#Kelas').val(),
+          'Jurusan':$('#Jurusan').val(),
+          'Status':$('#Status').val(),
+        },
+        dataType: "json",
+        success: function (response) {
+          bindGrid(response.data);
+        }
+      });
+    });
     function GetData(id) {
       var where_field = 'id';
       var where_value = id;
@@ -168,19 +211,27 @@
       $("#gridContainer").dxDataGrid({
         allowColumnResizing: true,
             dataSource: data,
-            keyExpr: "KodeTagihan",
+            keyExpr: "NoTransaksi",
             showBorders: true,
             allowColumnReordering: true,
             allowColumnResizing: true,
             columnAutoWidth: true,
-            showBorders: true,
+            hoverStateEnabled: true,
             paging: {
-                enabled: false
+              pageSize: 10,
+              enabled: true
+            },
+            pager: {
+              visible: true,
+              allowedPageSizes: [5, 10, 'all'],
+              showPageSizeSelector: true,
+              showInfo: true,
+              showNavigationButtons: true,
             },
             editing: {
                 mode: "row",
                 allowAdding:false,
-                allowUpdating: false,
+                allowUpdating: true,
                 allowDeleting: false,
                 texts: {
                     confirmDeleteMessage: ''  
@@ -195,105 +246,69 @@
                 enabled: false,
                 fileName: "Daftar Jenis Tagihan"
             },
+            selection: {
+              mode: 'single',
+            },
             columns: [
                 {
-                    dataField: "NamaTagihan",
+                    dataField: "NoTransaksi",
                     caption: "No. Tagihan",
                     allowEditing:false
                 },
                 {
-                    dataField: "KodePosKeuangan",
+                    dataField: "TglTagihan",
                     caption: "Tgl. Tagihan",
                     allowEditing:false
                 },
                 {
-                    dataField: "NamaPos",
+                    dataField: "NISSiswa",
                     caption: "NIS",
                     allowEditing:false
                 },
                 {
-                    dataField: "NamaPos",
+                    dataField: "NamaSiswa",
                     caption: "Nama Siswa",
                     allowEditing:false
                 },
                 {
-                    dataField: "NamaPos",
+                    dataField: "KelasJurusan",
                     caption: "Kelas/Jurusan",
                     allowEditing:false
                 },
+                {
+                    dataField: "Note",
+                    caption: "Note",
+                    allowEditing:false
+                },
             ],
-            onEditingStart: function(e) {
-                GetData(e.data.KodeTagihan);
-            },
-            onInitNewRow: function(e) {
-                // logEvent("InitNewRow");
-                $('#modal_').modal('show');
-            },
-            onRowInserting: function(e) {
-                // logEvent("RowInserting");
-            },
-            onRowInserted: function(e) {
-                // logEvent("RowInserted");
-                // alert('');
-                // console.log(e.data.onhand);
-                // var index = e.row.rowIndex;
-            },
-            onRowUpdating: function(e) {
-                // logEvent("RowUpdating");
-                
-            },
-            onRowUpdated: function(e) {
-                // logEvent(e);
-            },
-            onRowRemoving: function(e) {
-              id = e.data.KodeTagihan;
-              Swal.fire({
-                title: 'Apakah anda yakin?',
-                text: "anda akan menghapus data di baris ini !",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-              }).then((result) => {
-                if (result.value) {
-                  var table = 'app_setting';
-                  var field = 'id';
-                  var value = id;
+            onSelectionChanged(selectedItems) {
+              const data = selectedItems.selectedRowsData[0];
+              if (data) {
+                $.ajax({
+                  type: "post",
+                  url: "<?=base_url()?>C_TagihanSiswa/ReadDetail",
+                  async: false,
+                  data: {
+                    'NoTransaksi':data.NoTransaksi
+                  },
+                  dataType: "json",
+                  success: function (response) {
+                    var items_data = [];
 
-                  $.ajax({
-                      type    :'post',
-                      url     : '<?=base_url()?>C_JenisTagihan/CRUD',
-                      data    : {'KodeTagihan':id,'formtype':'delete'},
-                      dataType: 'json',
-                      success : function (response) {
-                        if(response.success == true){
-                          Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                      ).then((result)=>{
-                            location.reload();
-                          });
-                        }
-                        else{
-                          Swal.fire({
-                            type: 'error',
-                            title: 'Woops...',
-                            text: response.message,
-                            // footer: '<a href>Why do I have this issue?</a>'
-                          }).then((result)=>{
-                            location.reload();
-                          });
-                        }
+                    for (var i = 0; i < response.data.length; i++) {
+                      var arr ={
+                          NoTransaksi     : response.data[i].NoTransaksi,
+                          LineNumber      : response.data[i].LineNumber,
+                          KodeItemTagihan : response.data[i].KodeItemTagihan,
+                          NamaItemTagihan : response.data[i].NamaItemTagihan,
+                          JumlahTagihan   : ThousandSparator(response.data[i].JumlahTagihan)
                       }
-                    });
-                  
-                }
-                else{
-                  location.reload();
-                }
-              })
+                      items_data.push(arr);
+                    }
+                    bindGridDetail(items_data);
+                  }
+                });
+              }
             },
         });
 
@@ -306,14 +321,17 @@
       $("#gridContainer_detail").dxDataGrid({
         allowColumnResizing: true,
             dataSource: data,
-            keyExpr: "KodeTagihan",
+            keyExpr: "NoTransaksi",
             showBorders: true,
             allowColumnReordering: true,
             allowColumnResizing: true,
             columnAutoWidth: true,
-            showBorders: true,
+            hoverStateEnabled: true,
             paging: {
                 enabled: false
+            },
+            selection: {
+              mode: 'single',
             },
             editing: {
                 mode: "row",
@@ -326,103 +344,56 @@
             },
             columns: [
                 {
-                    dataField: "NamaTagihan",
+                    dataField: "LineNumber",
                     caption: "RowID",
                     allowEditing:false
                 },
                 {
-                    dataField: "KodePosKeuangan",
+                    dataField: "KodeItemTagihan",
                     caption: "Kode Tagihan",
                     allowEditing:false
                 },
                 {
-                    dataField: "NamaPos",
+                    dataField: "NamaItemTagihan",
                     caption: "Nama Tagihan",
                     allowEditing:false
                 },
                 {
-                    dataField: "NamaPos",
+                    dataField: "JumlahTagihan",
                     caption: "Jumlah Tagihan",
-                    allowEditing:false
+                    allowEditing:false,
+                    alignment: "right",
                 },
             ],
-            onEditingStart: function(e) {
-                GetData(e.data.KodeTagihan);
-            },
-            onInitNewRow: function(e) {
-                // logEvent("InitNewRow");
-                $('#modal_').modal('show');
-            },
-            onRowInserting: function(e) {
-                // logEvent("RowInserting");
-            },
-            onRowInserted: function(e) {
-                // logEvent("RowInserted");
-                // alert('');
-                // console.log(e.data.onhand);
-                // var index = e.row.rowIndex;
-            },
-            onRowUpdating: function(e) {
-                // logEvent("RowUpdating");
-                
-            },
-            onRowUpdated: function(e) {
-                // logEvent(e);
-            },
-            onRowRemoving: function(e) {
-              id = e.data.KodeTagihan;
-              Swal.fire({
-                title: 'Apakah anda yakin?',
-                text: "anda akan menghapus data di baris ini !",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-              }).then((result) => {
-                if (result.value) {
-                  var table = 'app_setting';
-                  var field = 'id';
-                  var value = id;
-
-                  $.ajax({
-                      type    :'post',
-                      url     : '<?=base_url()?>C_JenisTagihan/CRUD',
-                      data    : {'KodeTagihan':id,'formtype':'delete'},
-                      dataType: 'json',
-                      success : function (response) {
-                        if(response.success == true){
-                          Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                      ).then((result)=>{
-                            location.reload();
-                          });
-                        }
-                        else{
-                          Swal.fire({
-                            type: 'error',
-                            title: 'Woops...',
-                            text: response.message,
-                            // footer: '<a href>Why do I have this issue?</a>'
-                          }).then((result)=>{
-                            location.reload();
-                          });
-                        }
-                      }
-                    });
-                  
-                }
-                else{
-                  location.reload();
-                }
-              })
-            },
         });
 
         // add dx-toolbar-after
         // $('.dx-toolbar-after').append('Tambah Alat untuk di pinjam ');
     }
+
+    function ResetData() {
+      var now = new Date();
+
+      var day = ("0" + now.getDate()).slice(-2);
+      var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+      var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+      var lastDayofYear = now.getFullYear()+"-12-31";
+
+      $('#FromDate').val(today);
+      $('#ToDate').val(lastDayofYear);
+    }
+
+    function ThousandSparator(nStr) {
+      nStr += '';
+      var x = nStr.split('.');
+      var x1 = x[0];
+      var x2 = x.length > 1 ? '.' + x[1] : '';
+      var rgx = /(\d+)(\d{3})/;
+      while (rgx.test(x1)) {
+          x1 = x1.replace(rgx, '$1' + ',' + '$2');
+      }
+      return x1 + x2;
+  }
   });
 </script>

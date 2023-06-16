@@ -11,11 +11,30 @@
  Target Server Version : 100240
  File Encoding         : 65001
 
- Date: 15/06/2023 22:51:26
+ Date: 16/06/2023 21:02:15
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for bukukas
+-- ----------------------------
+DROP TABLE IF EXISTS `bukukas`;
+CREATE TABLE `bukukas`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `TglTransaksi` date NOT NULL,
+  `TglPencatatan` datetime(6) NOT NULL,
+  `KodeAkun` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `Keterangan` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `UangMasuk` double(16, 2) NOT NULL,
+  `UangKeluar` double(16, 2) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of bukukas
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for permission
@@ -122,6 +141,30 @@ CREATE TABLE `tagihandetail`  (
 -- ----------------------------
 -- Records of tagihandetail
 -- ----------------------------
+INSERT INTO `tagihandetail` VALUES ('2023060000100', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000101', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000110', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000111', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000120', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000121', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000130', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000131', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000140', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000141', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000150', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000151', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000160', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000161', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000170', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000171', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000180', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000181', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000190', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('2023060000191', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('20230600001100', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('20230600001101', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('20230600001110', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
+INSERT INTO `tagihandetail` VALUES ('20230600001111', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tagihanheader
@@ -145,30 +188,30 @@ CREATE TABLE `tagihanheader`  (
 -- ----------------------------
 -- Records of tagihanheader
 -- ----------------------------
-INSERT INTO `tagihanheader` VALUES ('2023060000100', '2023-06-15', '2023-06-15 05:50:03', '2023-07-01', '2023-07-08', '2022-2023', '1', '123', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000101', '2023-06-15', '2023-06-15 05:50:03', '2023-07-01', '2023-07-08', '2022-2023', '2', '456', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000110', '2023-06-15', '2023-06-15 05:50:03', '2023-08-01', '2023-08-08', '2022-2023', '1', '123', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('20230600001100', '2023-06-15', '2023-06-15 05:50:03', '2024-05-01', '2024-05-08', '2022-2023', '1', '123', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('20230600001101', '2023-06-15', '2023-06-15 05:50:03', '2024-05-01', '2024-05-08', '2022-2023', '2', '456', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000111', '2023-06-15', '2023-06-15 05:50:03', '2023-08-01', '2023-08-08', '2022-2023', '2', '456', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('20230600001110', '2023-06-15', '2023-06-15 05:50:03', '2024-06-01', '2024-06-08', '2022-2023', '1', '123', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('20230600001111', '2023-06-15', '2023-06-15 05:50:03', '2024-06-01', '2024-06-08', '2022-2023', '2', '456', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000120', '2023-06-15', '2023-06-15 05:50:03', '2023-09-01', '2023-09-08', '2022-2023', '1', '123', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000121', '2023-06-15', '2023-06-15 05:50:03', '2023-09-01', '2023-09-08', '2022-2023', '2', '456', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000130', '2023-06-15', '2023-06-15 05:50:03', '2023-10-01', '2023-10-08', '2022-2023', '1', '123', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000131', '2023-06-15', '2023-06-15 05:50:03', '2023-10-01', '2023-10-08', '2022-2023', '2', '456', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000140', '2023-06-15', '2023-06-15 05:50:03', '2023-11-01', '2023-11-08', '2022-2023', '1', '123', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000141', '2023-06-15', '2023-06-15 05:50:03', '2023-11-01', '2023-11-08', '2022-2023', '2', '456', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000150', '2023-06-15', '2023-06-15 05:50:03', '2023-12-01', '2023-12-08', '2022-2023', '1', '123', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000151', '2023-06-15', '2023-06-15 05:50:03', '2023-12-01', '2023-12-08', '2022-2023', '2', '456', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000160', '2023-06-15', '2023-06-15 05:50:03', '2024-01-01', '2024-01-08', '2022-2023', '1', '123', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000161', '2023-06-15', '2023-06-15 05:50:03', '2024-01-01', '2024-01-08', '2022-2023', '2', '456', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000170', '2023-06-15', '2023-06-15 05:50:03', '2024-02-01', '2024-02-08', '2022-2023', '1', '123', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000171', '2023-06-15', '2023-06-15 05:50:03', '2024-02-01', '2024-02-08', '2022-2023', '2', '456', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000180', '2023-06-15', '2023-06-15 05:50:03', '2024-03-01', '2024-03-08', '2022-2023', '1', '123', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000181', '2023-06-15', '2023-06-15 05:50:03', '2024-03-01', '2024-03-08', '2022-2023', '2', '456', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000190', '2023-06-15', '2023-06-15 05:50:03', '2024-04-01', '2024-04-08', '2022-2023', '1', '123', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000191', '2023-06-15', '2023-06-15 05:50:03', '2024-04-01', '2024-04-08', '2022-2023', '2', '456', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000100', '2023-07-01', '2023-06-16 08:07:49', '2023-07-01', '2023-07-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000101', '2023-07-01', '2023-06-16 08:07:49', '2023-07-01', '2023-07-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000110', '2023-08-01', '2023-06-16 08:07:49', '2023-08-01', '2023-08-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('20230600001100', '2024-05-01', '2023-06-16 08:07:49', '2024-05-01', '2024-05-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('20230600001101', '2024-05-01', '2023-06-16 08:07:49', '2024-05-01', '2024-05-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000111', '2023-08-01', '2023-06-16 08:07:49', '2023-08-01', '2023-08-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('20230600001110', '2024-06-01', '2023-06-16 08:07:49', '2024-06-01', '2024-06-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('20230600001111', '2024-06-01', '2023-06-16 08:07:49', '2024-06-01', '2024-06-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000120', '2023-09-01', '2023-06-16 08:07:49', '2023-09-01', '2023-09-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000121', '2023-09-01', '2023-06-16 08:07:49', '2023-09-01', '2023-09-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000130', '2023-10-01', '2023-06-16 08:07:49', '2023-10-01', '2023-10-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000131', '2023-10-01', '2023-06-16 08:07:49', '2023-10-01', '2023-10-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000140', '2023-11-01', '2023-06-16 08:07:49', '2023-11-01', '2023-11-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000141', '2023-11-01', '2023-06-16 08:07:49', '2023-11-01', '2023-11-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000150', '2023-12-01', '2023-06-16 08:07:49', '2023-12-01', '2023-12-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000151', '2023-12-01', '2023-06-16 08:07:49', '2023-12-01', '2023-12-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000160', '2024-01-01', '2023-06-16 08:07:49', '2024-01-01', '2024-01-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000161', '2024-01-01', '2023-06-16 08:07:49', '2024-01-01', '2024-01-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000170', '2024-02-01', '2023-06-16 08:07:49', '2024-02-01', '2024-02-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000171', '2024-02-01', '2023-06-16 08:07:49', '2024-02-01', '2024-02-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000180', '2024-03-01', '2023-06-16 08:07:49', '2024-03-01', '2024-03-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000181', '2024-03-01', '2023-06-16 08:07:49', '2024-03-01', '2024-03-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000190', '2024-04-01', '2023-06-16 08:07:49', '2024-04-01', '2024-04-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000191', '2024-04-01', '2023-06-16 08:07:49', '2024-04-01', '2024-04-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tjenistagihan
@@ -179,11 +222,13 @@ CREATE TABLE `tjenistagihan`  (
   `NamaTagihan` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `KodePosKeuangan` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   PRIMARY KEY (`KodeTagihan`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tjenistagihan
 -- ----------------------------
+INSERT INTO `tjenistagihan` VALUES (2, 'SPP Bulanan', '1001');
+INSERT INTO `tjenistagihan` VALUES (3, 'Tagihan Seragam', '1002');
 
 -- ----------------------------
 -- Table structure for tjurusan
@@ -233,6 +278,7 @@ CREATE TABLE `tposkeuangan`  (
 -- Records of tposkeuangan
 -- ----------------------------
 INSERT INTO `tposkeuangan` VALUES ('1001', 'Penerimaan SPP', 1);
+INSERT INTO `tposkeuangan` VALUES ('1002', 'Penerimaan Seragam', 1);
 
 -- ----------------------------
 -- Table structure for tsiswa
@@ -251,12 +297,15 @@ CREATE TABLE `tsiswa`  (
   `NoTlpWali` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `Email` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `TahunAngkatan` varchar(5) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `SaldoTagihanSiswa` double(16, 0) NULL DEFAULT NULL,
   PRIMARY KEY (`NIS`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tsiswa
 -- ----------------------------
+INSERT INTO `tsiswa` VALUES ('88888888', 'Puspitasari', '-', '-', 1, 2, 'Surakarta', '2023-06-16', '-', '-', 'prasetyoajiw@gmail.com', '2023', NULL);
+INSERT INTO `tsiswa` VALUES ('99999999', 'Prasetyo Aji Wibowo', '-', '-', 1, 2, 'Surakarta', '2023-06-16', '-', '-', 'prasetyoajiw@gmail.com', '2023', NULL);
 
 -- ----------------------------
 -- Table structure for userrole
@@ -302,5 +351,43 @@ CREATE TABLE `users`  (
 INSERT INTO `users` VALUES (14, 'admin', 'admin', 'a9bdd47d7321d4089b3b00561c9c621848bd6f6e2f745a53d54913d613789c23945b66de6ded1eb336a7d526f9349a9d964d6f6c3a40e2ac90b4b16c0121f7895Xg53McbkyQ/NmW60Sf4cu3wJsi/8cyZXxeXV7g6b04=', 'mnl', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `users` VALUES (43, 'operator', 'Operator', 'a9bdd47d7321d4089b3b00561c9c621848bd6f6e2f745a53d54913d613789c23945b66de6ded1eb336a7d526f9349a9d964d6f6c3a40e2ac90b4b16c0121f7895Xg53McbkyQ/NmW60Sf4cu3wJsi/8cyZXxeXV7g6b04=', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `users` VALUES (44, 'admin', 'admin', 'a9bdd47d7321d4089b3b00561c9c621848bd6f6e2f745a53d54913d613789c23945b66de6ded1eb336a7d526f9349a9d964d6f6c3a40e2ac90b4b16c0121f7895Xg53McbkyQ/NmW60Sf4cu3wJsi/8cyZXxeXV7g6b04=', 'mnl', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- ----------------------------
+-- Function structure for fnGetMonthName
+-- ----------------------------
+DROP FUNCTION IF EXISTS `fnGetMonthName`;
+delimiter ;;
+CREATE FUNCTION `fnGetMonthName`(`Bulan` int)
+ RETURNS varchar(55) CHARSET latin1
+BEGIN
+	#Routine body goes here...
+	SET @NamaBulan = '';
+	SET @NamaBulan = (SELECT CASE WHEN Bulan = 1 THEN 'Januari' ELSE 
+		CASE WHEN Bulan = 2 THEN 'Februari' ELSE 
+			CASE WHEN Bulan = 3 THEN 'Maret' ELSE 
+				CASE WHEN Bulan = 4 THEN 'April' ELSE 
+					CASE WHEN Bulan = 5 THEN 'Mei' ELSE 
+						CASE WHEN Bulan = 6 THEN 'Juni' ELSE 
+							CASE WHEN Bulan = 7 THEN 'Juli' ELSE 
+								CASE WHEN Bulan = 8 THEN 'Agustus' ELSE 
+									CASE WHEN Bulan = 9 THEN 'September' ELSE 
+										CASE WHEN Bulan = 10 THEN 'Oktober' ELSE 
+											CASE WHEN Bulan = 11 THEN 'November' ELSE 
+												CASE WHEN Bulan = 12 THEN 'Desember' ELSE '' END
+											END
+										END
+									END
+								END
+							END
+						END 
+					END
+				END
+			END
+		END
+	END);
+	RETURN @NamaBulan;
+END
+;;
+delimiter ;
 
 SET FOREIGN_KEY_CHECKS = 1;

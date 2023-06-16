@@ -10,41 +10,45 @@
 			$this->load->model('LoginMod');
 		}
 
-		public function Read()
+		public function ReadHeader()
 		{
 			$data = array('success' => false ,'message'=>array(),'data'=>array());
-
-			$NIS = $this->input->post('NIS');
+			$FromDate = $this->input->post('FromDate');
+			$ToDate = $this->input->post('ToDate');
 			$Kelas = $this->input->post('Kelas');
 			$Jurusan = $this->input->post('Jurusan');
+			$Status = $this->input->post('Status');
 			$textSearch = $this->input->post('textSearch');
 
 			$SQL = "SELECT 
-						a.NIS,
-						a.NamaSiswa,
-						b.NamaKelas,
-						c.NamaJurusan,
-						CONCAT(a.TempatLahir,', ',DATE_FORMAT(a.TglLahir,'%d-%m-%Y')) 'ttl',
-						a.*
-					FROM tsiswa a
-					LEFT JOIN tkelas b on a.Kelas = b.id
-					LEFT JOIN tjurusan c on a.Jurusan = c.id 
-					WHERE CONCAT(a.NIS,' ', a.NamaSiswa) LIKE '%".$textSearch."%'
-					";
-
-			if ($NIS != "") {
-				$SQL .= " AND a.NIS = '".$NIS."' ";
-			}
+					a.NoTransaksi,
+					a.TglTagihan,
+					a.TglJatuhTempo,
+					a.NISSiswa,
+					a.NamaSiswa,
+					a.TahunAjaran,
+					CONCAT(d.NamaKelas,' / ', c.NamaJurusan) KelasJurusan,
+					CONCAT('Tagihan Siswa Bulan ', fnGetMonthName(MONTH(a.TglTagihan)),' - ' , YEAR(TglTagihan)) Note,
+					a.Keterangan,
+					'Open' Status
+				FROM tagihanheader a
+				LEFT JOIN tsiswa b ON A.NISSiswa = b.NIS
+				LEFT JOIN tjurusan c on b.Jurusan = c.id
+				LEFT JOIN tkelas d on b.Kelas = d.id WHERE a.TglTransaksi BETWEEN '".$FromDate."' AND '".$ToDate."' ";
 
 			if ($Kelas != "") {
-				$SQL .= " AND a.Kelas = '".$Kelas."' ";
+				$SQL .= " AND b.Kelas = '".$Kelas."' ";
 			}
 
 			if ($Jurusan != "") {
-				$SQL .= " AND a.Jurusan = '".$Jurusan."' ";
+				$SQL .= " AND b.Jurusan = '".$Jurusan."' ";
 			}
 
-			$SQL .= "ORDER BY a.NamaSiswa ";
+			if ($Status != "") {
+				$SQL .= "";
+			}
+
+			$SQL .= "ORDER BY a.TglTagihan ";
 
 			$rs = $this->db->query($SQL);
 
@@ -54,13 +58,33 @@
 			}
 			echo json_encode($data);
 		}
+
+		public function ReadDetail()
+		{
+			$data = array('success' => false ,'message'=>array(),'data'=>array());
+
+			$NoTransaksi = $this->input->post('NoTransaksi');
+
+			$SQL = "SELECT * FROM tagihandetail where NoTransaksi = '".$NoTransaksi."'";
+			$SQL .= "ORDER BY LineNumber ";
+
+
+			$rs = $this->db->query($SQL);
+
+			if ($rs) {
+				$data['success'] = true;
+				$data['data'] = $rs->result();
+			}
+			echo json_encode($data);
+		}
+
 		public function AddMassal()
 		{
 			$data = array('success' => false ,'message'=>array(),'data'=>array());
 
 			/*
 				SAMPLE JSON FORMAT
-				{"TglTransaksi":"2023-06-15","MulaiTagih":"2023-07-01","SelesaiTagih":"2024-06-01","TahunAjaran":"2022-2023","Keterangan":"","ListSiswa":[{"NIS" : "1","NamaSiswa" : "123"},{"NIS" : "2","NamaSiswa" : "456"}],"ListDetail":[{}]}
+				{"TglTransaksi":"2023-06-15","MulaiTagih":"2023-07-01","SelesaiTagih":"2024-06-01","TahunAjaran":"2022-2023","Keterangan":"","ListSiswa":[{"NIS" : "99999999","NamaSiswa" : "Prasetyo Aji Wibowo"},{"NIS" : "88888888","NamaSiswa" : "Puspitasari"}],"ListDetail":[{"KodeTagihan" : "1","NamaTagihan" : "123","Jumlah":500000}]}
 			*/
 			$oParam = json_decode($this->input->post('oParam'));
 
@@ -70,7 +94,6 @@
 			$Prefix = date("Ym");
 
 			$temp = $this->GlobalVar->GetNoTransaksi($Prefix,'tagihanheader');
-
 			$NoTransaksi = $Prefix.str_pad(($temp == 1)?$temp:$temp+1, 5,"0",STR_PAD_LEFT);
 			// var_dump($NoTransaksi);
 
@@ -97,9 +120,9 @@
 							// var_dump(date('Y-m-d',$TglTagihan));
 							$TglJatuhTempo = strtotime(date('Y-m-d',$TglTagihan).' + 7 days');
 							
-							
+							$fixNoTrans = $NoTransaksi.$i.$row;
 							$oDBParam = array(
-								'NoTransaksi' => $NoTransaksi.$i.$row,
+								'NoTransaksi' => $fixNoTrans,
 								'TglTransaksi' => $oParam->TglTransaksi,
 								'TglPencatatan' => date("y-m-d h:i:s"),
 								'TglTagihan' => date('Y-m-d',$TglTagihan),
@@ -112,6 +135,21 @@
 
 							$this->ModelsExecuteMaster->ExecInsert($oDBParam,'tagihanheader');
 
+							// Detail
+							$lineNum = 0;
+							foreach ($objDetail as $keyDetail) {
+								$oDBParamDetail = array(
+									'NoTransaksi' => $fixNoTrans,
+									'LineNumber' => $lineNum,
+									'KodeItemTagihan' => $keyDetail->KodeTagihan,
+									'NamaItemTagihan' => $keyDetail->NamaTagihan,
+									'JumlahTagihan' => $keyDetail->Jumlah,
+								);
+
+								$this->ModelsExecuteMaster->ExecInsert($oDBParamDetail,'tagihandetail');
+								$lineNum += 1;	
+							}
+
 							$row += 1;
 
 							// var_dump(json_encode($oDBParam));
@@ -123,69 +161,22 @@
 					}
 				}	
 			} catch (Exception $e) {
-				
+				$nError = 400;
+				$sError = "Exception Error ".$e->getMessage();
+				goto jump;
 			}
 
 jump:
 			if ($this->db->trans_status() === FALSE || $nError != 0){
 				// echo $sError;
-				$data['message'] = $sError;
 			    $this->db->trans_rollback();
+			    $data['success'] = false;
+				$data['message'] = $sError;
 			}else{
 			    $this->db->trans_commit();
+			    $data['success'] = true;
+				$data['message'] = "Data Berhasil disimpan";
 			}
-
-
-			// $param = array(
-			// 	'NIS' => $NIS,
-			// 	'NamaSiswa' => $NamaSiswa,
-			// 	'AlamatSiswa' => $AlamatSiswa,
-			// 	'NamaWali' => $NamaWali,
-			// 	'Kelas' => $Kelas,
-			// 	'Jurusan' => $Jurusan,
-			// 	'TempatLahir' => $TempatLahir,
-			// 	'TglLahir' => $TglLahir,
-			// 	'NoTlpSiswa' => $NoTlpSiswa,
-			// 	'NoTlpWali' => $NoTlpWali,
-			// 	'Email' => $Email,
-			// 	'TahunAngkatan' => $TahunAngkatan
-			// );
-
-			// $rs;
-			// $errormessage = '';
-			// if ($formtype == 'add') {
-			// 	$rs = $this->ModelsExecuteMaster->ExecInsert($param,$this->table);
-			// 	if ($rs) {
-			// 		$data['success'] = true;
-			// 		$data['message'] = "Data Berhasil Disimpan";
-			// 	}
-			// 	else{
-			// 		$data['message'] = "Gagal Tambah data Siswa";
-			// 	}
-			// }
-			// elseif ($formtype == 'edit') {
-			// 	$rs = $this->ModelsExecuteMaster->ExecUpdate($param,array('NIS'=>$NIS),$this->table);
-			// 	if ($rs) {
-			// 		$data['success'] = true;
-			// 		$data['message'] = "Data Berhasil Disimpan";
-			// 	}
-			// 	else{
-			// 		$data['message'] = "Gagal Edit data Siswa";
-			// 	}
-			// }
-			// elseif ($formtype == 'delete') {
-			// 	$rs = $this->ModelsExecuteMaster->DeleteData(array('NIS'=>$NIS),$this->table);
-			// 	if ($rs) {
-			// 		$data['success'] = true;
-			// 		$data['message'] = "Data Berhasil Disimpan";
-			// 	}
-			// 	else{
-			// 		$data['message'] = "Gagal Delete data Siswa";
-			// 	}
-			// }
-			// else{
-			// 	$data['message'] = "Invalid Form Type";
-			// }
 			echo json_encode($data);
 		}
 	}
