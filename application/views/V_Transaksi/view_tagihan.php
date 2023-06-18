@@ -231,7 +231,7 @@
             editing: {
                 mode: "row",
                 allowAdding:false,
-                allowUpdating: true,
+                allowUpdating: false,
                 allowDeleting: false,
                 texts: {
                     confirmDeleteMessage: ''  

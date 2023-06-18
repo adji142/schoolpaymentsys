@@ -25,6 +25,7 @@
 						b.NamaKelas,
 						c.NamaJurusan,
 						CONCAT(a.TempatLahir,', ',DATE_FORMAT(a.TglLahir,'%d-%m-%Y')) 'ttl',
+						CONCAT(b.NamaKelas,' / ',c.NamaJurusan) KelasJurusan,
 						a.*
 					FROM tsiswa a
 					LEFT JOIN tkelas b on a.Kelas = b.id

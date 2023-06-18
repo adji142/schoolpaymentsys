@@ -11,7 +11,7 @@
  Target Server Version : 100240
  File Encoding         : 65001
 
- Date: 16/06/2023 21:02:15
+ Date: 18/06/2023 22:28:11
 */
 
 SET NAMES utf8mb4;
@@ -143,28 +143,6 @@ CREATE TABLE `tagihandetail`  (
 -- ----------------------------
 INSERT INTO `tagihandetail` VALUES ('2023060000100', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
 INSERT INTO `tagihandetail` VALUES ('2023060000101', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000110', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000111', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000120', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000121', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000130', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000131', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000140', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000141', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000150', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000151', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000160', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000161', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000170', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000171', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000180', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000181', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000190', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('2023060000191', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('20230600001100', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('20230600001101', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('20230600001110', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
-INSERT INTO `tagihandetail` VALUES ('20230600001111', 0, '2', 'SPP Bulanan', 500000.00, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tagihanheader
@@ -188,30 +166,8 @@ CREATE TABLE `tagihanheader`  (
 -- ----------------------------
 -- Records of tagihanheader
 -- ----------------------------
-INSERT INTO `tagihanheader` VALUES ('2023060000100', '2023-07-01', '2023-06-16 08:07:49', '2023-07-01', '2023-07-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000101', '2023-07-01', '2023-06-16 08:07:49', '2023-07-01', '2023-07-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000110', '2023-08-01', '2023-06-16 08:07:49', '2023-08-01', '2023-08-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('20230600001100', '2024-05-01', '2023-06-16 08:07:49', '2024-05-01', '2024-05-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('20230600001101', '2024-05-01', '2023-06-16 08:07:49', '2024-05-01', '2024-05-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000111', '2023-08-01', '2023-06-16 08:07:49', '2023-08-01', '2023-08-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('20230600001110', '2024-06-01', '2023-06-16 08:07:49', '2024-06-01', '2024-06-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('20230600001111', '2024-06-01', '2023-06-16 08:07:49', '2024-06-01', '2024-06-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000120', '2023-09-01', '2023-06-16 08:07:49', '2023-09-01', '2023-09-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000121', '2023-09-01', '2023-06-16 08:07:49', '2023-09-01', '2023-09-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000130', '2023-10-01', '2023-06-16 08:07:49', '2023-10-01', '2023-10-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000131', '2023-10-01', '2023-06-16 08:07:49', '2023-10-01', '2023-10-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000140', '2023-11-01', '2023-06-16 08:07:49', '2023-11-01', '2023-11-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000141', '2023-11-01', '2023-06-16 08:07:49', '2023-11-01', '2023-11-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000150', '2023-12-01', '2023-06-16 08:07:49', '2023-12-01', '2023-12-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000151', '2023-12-01', '2023-06-16 08:07:49', '2023-12-01', '2023-12-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000160', '2024-01-01', '2023-06-16 08:07:49', '2024-01-01', '2024-01-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000161', '2024-01-01', '2023-06-16 08:07:49', '2024-01-01', '2024-01-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000170', '2024-02-01', '2023-06-16 08:07:49', '2024-02-01', '2024-02-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000171', '2024-02-01', '2023-06-16 08:07:49', '2024-02-01', '2024-02-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000180', '2024-03-01', '2023-06-16 08:07:49', '2024-03-01', '2024-03-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000181', '2024-03-01', '2023-06-16 08:07:49', '2024-03-01', '2024-03-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000190', '2024-04-01', '2023-06-16 08:07:49', '2024-04-01', '2024-04-08', '2022-2023', '99999999', 'Prasetyo Aji Wibowo', '', NULL, NULL);
-INSERT INTO `tagihanheader` VALUES ('2023060000191', '2024-04-01', '2023-06-16 08:07:49', '2024-04-01', '2024-04-08', '2022-2023', '88888888', 'Puspitasari', '', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000100', '2023-06-18', '2023-06-18 05:25:44', '2023-07-01', '2023-07-08', '2023-2024', '99999999', 'Prasetyo Aji Wibowo', 'Test Penyimpanan', NULL, NULL);
+INSERT INTO `tagihanheader` VALUES ('2023060000101', '2023-06-18', '2023-06-18 05:25:44', '2023-07-01', '2023-07-08', '2023-2024', '88888888', 'Puspitasari', 'Test Penyimpanan', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tjenistagihan
