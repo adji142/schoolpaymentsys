@@ -143,9 +143,17 @@ class home extends CI_Controller {
 	{
 		$this->load->view('V_Transaksi/view_tagihan');
 	}
-	public function tambahsiswa()
+	public function tambahtagihan()
 	{
 		$this->load->view('V_Transaksi/add_tagihan');
+	}
+	public function pembayaran()
+	{
+		$this->load->view('V_Transaksi/view_pembayaran');
+	}
+	public function bukukas()
+	{
+		$this->load->view('V_Transaksi/view_bukukas');
 	}
 	// TRX
 	public function lap_attlog()

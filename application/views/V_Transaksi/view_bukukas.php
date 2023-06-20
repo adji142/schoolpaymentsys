@@ -13,7 +13,7 @@
       <div class="col-md-12 col-sm-12  ">
         <div class="x_panel">
           <div class="x_title">
-            <h2>Tagihan Siswa</h2>
+            <h2>Buku Kas</h2>
             <div class="clearfix"></div>
           </div>
 
@@ -28,43 +28,6 @@
                 <input type="date" id="ToDate" name="ToDate" class="form-control">
               </div>
 
-              <div class="col-md-3 col-sm-12  form-group">
-                Jurusan
-                <select id="Jurusan" name="Jurusan" class="form-control">
-                  <option value="">Pilih Jurusan..</option>
-                  <?php
-                    $rs = $this->ModelsExecuteMaster->GetData('tjurusan')->result();
-
-                    foreach ($rs as $key) {
-                      echo "<option value = '".$key->id."'>".$key->NamaJurusan."</option>";
-                    }
-                  ?>
-                </select>
-              </div>
-
-              <div class="col-md-3 col-sm-12  form-group">
-                Kelas
-                <select id="Kelas" name="Kelas" class="form-control">
-                  <option value="">Pilih Kelas..</option>
-                  <?php
-                    $rs = $this->ModelsExecuteMaster->GetData('tkelas')->result();
-
-                    foreach ($rs as $key) {
-                      echo "<option value = '".$key->id."'>".$key->NamaKelas."</option>";
-                    }
-                  ?>
-                </select>
-              </div>
-
-              <div class="col-md-2 col-sm-12  form-group">
-                Status Document
-                <select id="Status" name="Status" class="form-control">
-                  <option value="Open">Open</option>
-                  <option value="Close">Close</option>
-                  <option value="">Semua</option>
-                </select>
-              </div>
-
               <div class="col-md-4 col-sm-12  form-group">
                 <!-- <input type="text" placeholder="NIK / Nama" class="form-control"> -->
                 <br>
@@ -75,14 +38,6 @@
                 <div class="dx-viewport demo-container">
                   <div id="data-grid-demo">
                     <div id="gridContainer">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12 col-sm-12  form-group">
-                <div class="dx-viewport demo-container">
-                  <div id="data-grid-demo">
-                    <div id="gridContainer_detail">
                     </div>
                   </div>
                 </div>
@@ -101,47 +56,62 @@
 <script type="text/javascript">
   $(function () {
     $(document).ready(function () {
-      ResetData();
-      var where_field = '';
-      var where_value = '';
-      var table = 'users';
-
-      $.ajax({
-        type: "post",
-        url: "<?=base_url()?>C_TagihanSiswa/ReadHeader",
-        data: {
-          'FromDate':$('#FromDate').val(),
-          'ToDate':$('#ToDate').val(),
-          'Kelas':$('#Kelas').val(),
-          'Jurusan':$('#Jurusan').val(),
-          'Status':$('#Status').val(),
-        },
-        dataType: "json",
-        success: function (response) {
-          bindGrid(response.data);
-        }
-      });
+      getData()
     });
     $('.close').click(function() {
       location.reload();
     });
     $('#btSearch').click(function () {
+      getData();
+    });
+
+    function getData() {
       $.ajax({
         type: "post",
-        url: "<?=base_url()?>C_TagihanSiswa/ReadHeader",
+        url: "<?=base_url()?>C_BukuKas/Read",
         data: {
           'FromDate':$('#FromDate').val(),
-          'ToDate':$('#ToDate').val(),
-          'Kelas':$('#Kelas').val(),
-          'Jurusan':$('#Jurusan').val(),
-          'Status':$('#Status').val(),
+          'ToDate':$('#ToDate').val()
         },
         dataType: "json",
         success: function (response) {
-          bindGrid(response.data);
+          // bindGrid(response.data);
+          // console.log(response.data);
+          var items_data=[];
+          var SaldoAwal = 0;
+          var SaldoAkhir = 0;
+          for (var i = 0; i < response.data.length; i++) {
+            // Things[i]
+            var arr = {};
+            if (response.data[i]["KodeAkun"] == "99") {
+              SaldoAwal = response.data[i]["SaldoAwal"];
+              SaldoAkhir += Number(SaldoAwal) + Number(response.data[i]["Pemasukan"]) - Number(response.data[i]["Pengeluaran"])
+              arr = {
+                Reff : response.data[i]["Reff"],
+                SaldoAwal : SaldoAwal,
+                Pemasukan : response.data[i]["Pemasukan"],
+                Pengeluaran : response.data[i]["Pengeluaran"],
+                Saldo     : SaldoAkhir
+              }
+            }
+            else{
+              // console.log();
+              SaldoAkhir += Number(SaldoAwal) + Number(response.data[i]["Pemasukan"]) - Number(response.data[i]["Pengeluaran"])
+              arr = {
+                Reff : response.data[i]["Reff"],
+                SaldoAwal : response.data[i]["SaldoAwal"],
+                Pemasukan : response.data[i]["Pemasukan"],
+                Pengeluaran : response.data[i]["Pengeluaran"],
+                Saldo     : SaldoAkhir
+              }
+            }
+            // console.log()
+            items_data.push(arr);
+          }
+          console.log(items_data);
         }
       });
-    });
+    }
     function bindGrid(data) {
 
       $("#gridContainer").dxDataGrid({
@@ -187,33 +157,48 @@
             },
             columns: [
                 {
-                    dataField: "NoTransaksi",
-                    caption: "No. Tagihan",
+                    dataField: "KodeAkun",
+                    caption: "Kode Akun",
                     allowEditing:false
                 },
                 {
-                    dataField: "TglTagihan",
-                    caption: "Tgl. Tagihan",
+                    dataField: "NamaPos",
+                    caption: "Nama Akun",
                     allowEditing:false
                 },
                 {
-                    dataField: "NISSiswa",
-                    caption: "NIS",
+                    dataField: "Reff",
+                    caption: "Reff",
                     allowEditing:false
                 },
                 {
-                    dataField: "NamaSiswa",
-                    caption: "Nama Siswa",
+                    dataField: "TglTransaksi",
+                    caption: "Tgl. Transaksi",
                     allowEditing:false
                 },
                 {
-                    dataField: "KelasJurusan",
-                    caption: "Kelas/Jurusan",
+                    dataField: "Keterangan",
+                    caption: "Keterangan",
                     allowEditing:false
                 },
                 {
-                    dataField: "Note",
-                    caption: "Note",
+                    dataField: "SaldoAwal",
+                    caption: "Saldo Awal",
+                    allowEditing:false
+                },
+                {
+                    dataField: "Pemasukan",
+                    caption: "Pemasukan",
+                    allowEditing:false
+                },
+                {
+                    dataField: "Pengeluaran",
+                    caption: "Pengeluaran",
+                    allowEditing:false
+                },
+                {
+                    dataField: "Saldo",
+                    caption: "Saldo",
                     allowEditing:false
                 },
             ],
@@ -250,74 +235,6 @@
 
         // add dx-toolbar-after
         // $('.dx-toolbar-after').append('Tambah Alat untuk di pinjam ');
-    }
-
-    function bindGridDetail(data) {
-
-      $("#gridContainer_detail").dxDataGrid({
-        allowColumnResizing: true,
-            dataSource: data,
-            keyExpr: "NoTransaksi",
-            showBorders: true,
-            allowColumnReordering: true,
-            allowColumnResizing: true,
-            columnAutoWidth: true,
-            hoverStateEnabled: true,
-            paging: {
-                enabled: false
-            },
-            selection: {
-              mode: 'single',
-            },
-            editing: {
-                mode: "row",
-                allowAdding:false,
-                allowUpdating: false,
-                allowDeleting: false,
-                texts: {
-                    confirmDeleteMessage: ''  
-                }
-            },
-            columns: [
-                {
-                    dataField: "LineNumber",
-                    caption: "RowID",
-                    allowEditing:false
-                },
-                {
-                    dataField: "KodeItemTagihan",
-                    caption: "Kode Tagihan",
-                    allowEditing:false
-                },
-                {
-                    dataField: "NamaItemTagihan",
-                    caption: "Nama Tagihan",
-                    allowEditing:false
-                },
-                {
-                    dataField: "JumlahTagihan",
-                    caption: "Jumlah Tagihan",
-                    allowEditing:false,
-                    alignment: "right",
-                },
-            ],
-        });
-
-        // add dx-toolbar-after
-        // $('.dx-toolbar-after').append('Tambah Alat untuk di pinjam ');
-    }
-
-    function ResetData() {
-      var now = new Date();
-
-      var day = ("0" + now.getDate()).slice(-2);
-      var month = ("0" + (now.getMonth() + 1)).slice(-2);
-
-      var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
-      var lastDayofYear = now.getFullYear()+"-12-31";
-
-      $('#FromDate').val(today);
-      $('#ToDate').val(lastDayofYear);
     }
 
     function ThousandSparator(nStr) {

@@ -20,7 +20,7 @@
 			$Status = $this->input->post('Status');
 			$textSearch = $this->input->post('textSearch');
 
-			$SQL = "SELECT 
+			$SQL = "SELECT * FROM (SELECT 
 					a.NoTransaksi,
 					a.TglTagihan,
 					a.TglJatuhTempo,
@@ -30,11 +30,23 @@
 					CONCAT(d.NamaKelas,' / ', c.NamaJurusan) KelasJurusan,
 					CONCAT('Tagihan Siswa Bulan ', fnGetMonthName(MONTH(a.TglTagihan)),' - ' , YEAR(TglTagihan)) Note,
 					a.Keterangan,
-					'Open' Status
+					'Open' Status,
+					SUM(a1.JumlahTagihan) - COALESCE(d.Jumlah, 0) TotalTagihan
 				FROM tagihanheader a
+				LEFT JOIN tagihandetail a1 on a.NoTransaksi = a1.NoTransaksi
 				LEFT JOIN tsiswa b ON A.NISSiswa = b.NIS
 				LEFT JOIN tjurusan c on b.Jurusan = c.id
-				LEFT JOIN tkelas d on b.Kelas = d.id WHERE a.TglTransaksi BETWEEN '".$FromDate."' AND '".$ToDate."' ";
+				LEFT JOIN tkelas d on b.Kelas = d.id 
+				LEFT JOIN (
+					SELECT 
+						x.BaseNum,
+						x.BaseLine,
+						x.KodeItemTagihan,
+						SUM(x.Jumlah) Jumlah
+					FROM pembayarandetail x
+					GROUP BY x.BaseNum,x.BaseLine,x.KodeItemTagihan
+				)d on a1.NoTransaksi = d.BaseNum AND a1.LineNumber = d.BaseLine
+				WHERE a.TglTransaksi BETWEEN '".$FromDate."' AND '".$ToDate."' ";
 
 			if ($Kelas != "") {
 				$SQL .= " AND b.Kelas = '".$Kelas."' ";
@@ -44,11 +56,15 @@
 				$SQL .= " AND b.Jurusan = '".$Jurusan."' ";
 			}
 
-			if ($Status != "") {
-				$SQL .= "";
-			}
+			$SQL .= "GROUP BY a.NoTransaksi ) x WHERE 1 = 1 ";
 
-			$SQL .= "ORDER BY a.TglTagihan ";
+			if ($Status == "Open") {
+				$SQL .= " AND x.TotalTagihan > 0 ";
+			}
+			elseif ($Status == "Close") {
+				$SQL .= " AND x.TotalTagihan = 0 ";
+			}
+			$SQL .= "ORDER BY x.TglTagihan ";
 
 			$rs = $this->db->query($SQL);
 
@@ -65,8 +81,47 @@
 
 			$NoTransaksi = $this->input->post('NoTransaksi');
 
-			$SQL = "SELECT * FROM tagihandetail where NoTransaksi = '".$NoTransaksi."'";
+			$SQL = "SELECT 
+				a.*, a.JumlahTagihan - COALESCE(b.Jumlah,0) OutStanding
+			FROM tagihandetail a
+			LEFT JOIN (
+				SELECT 
+					x.BaseNum,
+					x.BaseLine,
+					x.KodeItemTagihan,
+					SUM(x.Jumlah) Jumlah
+				FROM pembayarandetail x
+				GROUP BY x.BaseNum,x.BaseLine,x.KodeItemTagihan
+			) b on b.BaseNum = a.NoTransaksi AND b.BaseLine = a.LineNumber
+			where NoTransaksi = '".$NoTransaksi."'";
 			$SQL .= "ORDER BY LineNumber ";
+
+
+			$rs = $this->db->query($SQL);
+
+			if ($rs) {
+				$data['success'] = true;
+				$data['data'] = $rs->result();
+			}
+			echo json_encode($data);
+		}
+
+		public function ReadPembayaran()
+		{
+			$data = array('success' => false ,'message'=>array(),'data'=>array());
+
+			$NoTransaksi = $this->input->post('NoTransaksi');
+			// $LineNum = $this->input->post('LineNum');
+
+			$SQL = "SELECT 
+						a.NoTransaksi,
+						b.TglTransaksi,
+						b.Keterangan,
+						a.Jumlah
+					FROM pembayarandetail a
+					LEFT JOIN pembayaranheader b on a.NoTransaksi = b.NoTransaksi
+					WHERE a.BaseNum = '".$NoTransaksi."'";
+			$SQL .= " ORDER BY B.TglPencatatan DESC ";
 
 
 			$rs = $this->db->query($SQL);
@@ -91,10 +146,10 @@
 			$tMulaiTagih = new DateTime($oParam->MulaiTagih);
 			$tSelesaiTagih = new DateTime($oParam->SelesaiTagih);
 
-			$Prefix = date("Ym");
+			$Prefix = date("Ym")."1";
 
 			$temp = $this->GlobalVar->GetNoTransaksi($Prefix,'tagihanheader');
-			$NoTransaksi = $Prefix.str_pad(($temp == 1)?$temp:$temp+1, 5,"0",STR_PAD_LEFT);
+			$NoTransaksi = $Prefix.str_pad($temp, 5,"0",STR_PAD_LEFT);
 			// var_dump($NoTransaksi);
 
 			$iterateCount = $tMulaiTagih->diff($tSelesaiTagih)->m;
@@ -167,6 +222,83 @@
 			}
 
 jump:
+			if ($this->db->trans_status() === FALSE || $nError != 0){
+				// echo $sError;
+			    $this->db->trans_rollback();
+			    $data['success'] = false;
+				$data['message'] = $sError;
+			}else{
+			    $this->db->trans_commit();
+			    $data['success'] = true;
+				$data['message'] = "Data Berhasil disimpan";
+			}
+			echo json_encode($data);
+		}
+
+		public function BayarTagihan()
+		{
+			$data = array('success' => false ,'message'=>array(),'data'=>array());
+
+			/*
+				SAMPLE JSON FORMAT
+				{"TglTransaksi":"2023-06-15","MulaiTagih":"2023-07-01","SelesaiTagih":"2024-06-01","TahunAjaran":"2022-2023","Keterangan":"","ListSiswa":[{"NIS" : "99999999","NamaSiswa" : "Prasetyo Aji Wibowo"},{"NIS" : "88888888","NamaSiswa" : "Puspitasari"}],"ListDetail":[{"KodeTagihan" : "1","NamaTagihan" : "123","Jumlah":500000}]}
+			*/
+			$oParam = json_decode($this->input->post('oParam'));
+
+			$TglTransaksi = $oParam->TglTransaksi;
+			$Keterangan = $oParam->Keterangan;
+
+			$Prefix = date("Ym")."2";
+
+			$temp = $this->GlobalVar->GetNoTransaksi($Prefix,'pembayaranheader');
+			$NoTransaksi = $Prefix.str_pad($temp, 6,"0",STR_PAD_LEFT);
+			
+
+			$nError = 0;
+			$sError = '';
+
+			$this->db->trans_begin();
+
+			try {
+				$objListDetail = $oParam->ListDetail;
+
+				$oDBParam = array(
+					'NoTransaksi' => $NoTransaksi,
+					'TglTransaksi' => $TglTransaksi,
+					'TglPencatatan' => date("y-m-d h:i:s"),
+					'Keterangan' => $Keterangan
+				);
+
+				$this->ModelsExecuteMaster->ExecInsert($oDBParam,'pembayaranheader');
+
+				if (count($objListDetail) > 0) {
+					$lineNum = 0;
+					foreach ($objListDetail as $key) {
+						$oDBParamDetail = array(
+							'NoTransaksi' => $NoTransaksi,
+							'LineNumber' => $lineNum,
+							'KodeItemTagihan' => $key->KodeItemTagihan,
+							'NamaItemTagihan' => $key->NamaItemTagihan,
+							'Jumlah' => $key->JumlahPembayaran,
+							'BaseNum' => $key->BaseNum,
+							'BaseLine' => $key->BaseLine
+						);
+						$this->ModelsExecuteMaster->ExecInsert($oDBParamDetail,'pembayarandetail');
+						$lineNum += 1;
+					}
+				}
+				else{
+					$nError = 301;
+					$sError = "Object Detail Not Found";
+					goto jump;
+				}
+			} catch (Exception $e) {
+				$nError = 400;
+				$sError = "Exception Error ".$e->getMessage();
+				goto jump;
+			}
+
+			jump:
 			if ($this->db->trans_status() === FALSE || $nError != 0){
 				// echo $sError;
 			    $this->db->trans_rollback();

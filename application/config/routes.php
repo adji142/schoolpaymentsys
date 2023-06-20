@@ -148,7 +148,9 @@ $route['jenistagihan'] = 'Home/mstr_jenistagihan';
 
 // Transaksi
 $route['tagihan'] = 'Home/tagihansiswa';
-$route['addsiswa'] = 'Home/tambahsiswa';
+$route['addtagihan'] = 'Home/tambahtagihan';
+$route['pembayaran'] = 'Home/pembayaran';
+$route['bukukas'] = 'Home/bukukas';
 // Laporan
 $route['attlog'] = 'Home/lap_attlog';
 $route['rekapabsen'] = 'Home/lap_rekapabsen';

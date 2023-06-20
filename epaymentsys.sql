@@ -11,7 +11,7 @@
  Target Server Version : 100240
  File Encoding         : 65001
 
- Date: 18/06/2023 22:28:11
+ Date: 20/06/2023 22:47:59
 */
 
 SET NAMES utf8mb4;
@@ -29,12 +29,54 @@ CREATE TABLE `bukukas`  (
   `Keterangan` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `UangMasuk` double(16, 2) NOT NULL,
   `UangKeluar` double(16, 2) NOT NULL,
+  `BaseNum` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `BaseLine` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of bukukas
 -- ----------------------------
+INSERT INTO `bukukas` VALUES (1, '2023-06-20', '2023-06-20 05:07:34.000000', '1001', '', 250000.00, 0.00, '2023062000001', 0);
+INSERT INTO `bukukas` VALUES (2, '2023-06-20', '2023-06-20 05:08:18.000000', '1001', 'Test Pembayaran', 100000.00, 0.00, '2023062000002', 0);
+
+-- ----------------------------
+-- Table structure for pembayarandetail
+-- ----------------------------
+DROP TABLE IF EXISTS `pembayarandetail`;
+CREATE TABLE `pembayarandetail`  (
+  `NoTransaksi` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `LineNumber` int(11) NOT NULL,
+  `KodeItemTagihan` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `NamaItemTagihan` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `Jumlah` double(16, 2) NOT NULL,
+  `BaseNum` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `BaseLine` int(11) NOT NULL
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of pembayarandetail
+-- ----------------------------
+INSERT INTO `pembayarandetail` VALUES ('2023062000001', 0, '2', 'SPP Bulanan', 250000.00, '2023060000101', 0);
+INSERT INTO `pembayarandetail` VALUES ('2023062000002', 0, '2', 'SPP Bulanan', 100000.00, '2023060000101', 0);
+
+-- ----------------------------
+-- Table structure for pembayaranheader
+-- ----------------------------
+DROP TABLE IF EXISTS `pembayaranheader`;
+CREATE TABLE `pembayaranheader`  (
+  `NoTransaksi` varchar(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `TglTransaksi` date NOT NULL,
+  `TglPencatatan` datetime(6) NOT NULL,
+  `Keterangan` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  PRIMARY KEY (`NoTransaksi`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of pembayaranheader
+-- ----------------------------
+INSERT INTO `pembayaranheader` VALUES ('2023062000001', '2023-06-20', '2023-06-20 05:07:34.000000', '');
+INSERT INTO `pembayaranheader` VALUES ('2023062000002', '2023-06-20', '2023-06-20 05:08:18.000000', 'Test Pembayaran');
 
 -- ----------------------------
 -- Table structure for permission
@@ -71,9 +113,9 @@ INSERT INTO `permission` VALUES (9, 'Pos Keuangan', 'poskeu', ' ', '4', b'0', b'
 INSERT INTO `permission` VALUES (10, 'Jenis Tagihan Siswa', 'jenistagihan', '', '4', b'0', b'0', 10, b'1', NULL, NULL, NULL);
 INSERT INTO `permission` VALUES (11, 'Transaksi', '', 'fa-pencil', '0', b'1', b'0', 11, b'1', NULL, NULL, NULL);
 INSERT INTO `permission` VALUES (12, 'Tagihan Siswa', 'tagihan', '', '11', b'0', b'0', 12, b'1', NULL, NULL, NULL);
-INSERT INTO `permission` VALUES (13, 'Pembayaran Siswa', '', ' ', '11', b'0', b'0', 13, b'1', NULL, NULL, NULL);
+INSERT INTO `permission` VALUES (13, 'Pembayaran Siswa', 'pembayaran', ' ', '11', b'0', b'0', 13, b'1', NULL, NULL, NULL);
 INSERT INTO `permission` VALUES (14, 'Keuangan', '', ' ', '11', b'0', b'1', 14, b'1', NULL, NULL, NULL);
-INSERT INTO `permission` VALUES (15, 'Serah Terima Uang', '', '', '11', b'0', b'0', 15, b'1', NULL, NULL, NULL);
+INSERT INTO `permission` VALUES (15, 'Buku Kas', 'bukukas', '', '11', b'0', b'0', 15, b'1', NULL, NULL, NULL);
 INSERT INTO `permission` VALUES (16, 'Laporan', '', 'fa-file', '0', b'1', b'0', 16, b'1', NULL, NULL, NULL);
 INSERT INTO `permission` VALUES (17, 'Laporan Pembayaran Siswa', '', '', '16', b'1', b'0', 17, b'1', NULL, NULL, NULL);
 INSERT INTO `permission` VALUES (18, 'Laporan Keuangan', '', '', '16', b'1', b'0', 18, b'1', NULL, NULL, NULL);
@@ -342,6 +384,74 @@ BEGIN
 		END
 	END);
 	RETURN @NamaBulan;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for vsp_show_buku_kas
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `vsp_show_buku_kas`;
+delimiter ;;
+CREATE PROCEDURE `vsp_show_buku_kas`(IN `TglAwal` date,IN `TglAkhir` date)
+BEGIN
+	SELECT * FROM (
+		SELECT 
+			'99'							KodeAkun,
+			'SALDO AWAL'			NamaPos,
+			''								Reff,
+			'2023-06-01'			TglTransaksi,
+			'2023-06-01' 			TglPencatatan,
+			''								Keterangan,
+			COALESCE(SUM(a.UangMasuk - a.UangKeluar),0) SaldoAwal,
+			0 Pemasukan,
+			0 Pengeluaran
+		FROM bukukas a
+		LEFT JOIN tposkeuangan b on a.KodeAkun = b.KodePosKeuangan
+		WHERE a.TglTransaksi < TglAwal
+		UNION ALL
+		SELECT 
+			a.KodeAkun,
+			d.NamaPos,
+			a.BaseNum,
+			a.TglTransaksi,
+			a.TglPencatatan,
+			CONCAT('PEMBAYARAN ', d.NamaPos, ' - ', e.NamaSiswa, ' Bulan ', fnGetMonthName(MONTH(a.TglTransaksi)),' ', YEAR(a.TglTransaksi)) Keterangan,
+			0 SaldoAwal,
+			a.UangMasuk,
+			a.UangKeluar
+		FROM bukukas a
+		LEFT JOIN pembayarandetail b on a.BaseNum = b.NoTransaksi and a.BaseLine = b.LineNumber
+		LEFT JOIN tagihandetail c on c.NoTransaksi = b.BaseNum and c.LineNumber = b.BaseLine
+		LEFT JOIN tposkeuangan d on a.KodeAkun = d.KodePosKeuangan
+		LEFT JOIN tagihanheader e on c.NoTransaksi = e.NoTransaksi
+		WHERE a.TglTransaksi BETWEEN TglAwal AND TglAkhir
+	)x ORDER BY x.TglPencatatan;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table pembayarandetail
+-- ----------------------------
+DROP TRIGGER IF EXISTS `trg_AddBukuKas`;
+delimiter ;;
+CREATE TRIGGER `trg_AddBukuKas` AFTER INSERT ON `pembayarandetail` FOR EACH ROW BEGIN
+	INSERT INTO bukukas
+	SELECT 
+		0,
+		c.TglTransaksi,
+		c.TglPencatatan,
+		b.KodePosKeuangan,
+		c.Keterangan,
+		a.Jumlah,
+		0,
+		a.NoTransaksi,
+		a.LineNumber
+	FROM pembayarandetail a
+	LEFT JOIN tjenistagihan b on a.KodeItemTagihan = b.KodeTagihan
+	LEFT JOIN pembayaranheader c on a.NoTransaksi = c.NoTransaksi
+	WHERE a.NoTransaksi = NEW.NoTransaksi;
 END
 ;;
 delimiter ;

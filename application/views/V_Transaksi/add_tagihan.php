@@ -279,23 +279,25 @@
     $('#btSaveTagihan').click(function () {
       // setEnableCommand();
       // Validasi
+      $('#btSaveTagihan').text('Save');
+      $('#btSaveTagihan').attr('disabled',true);
 
       var dataGridDetail = $("#gridContainerDetail").dxDataGrid("instance");
       var dsDetail = dataGridDetail.getDataSource();
       var dataDetail = dsDetail.items();
 
       var listDataDetail = [];
+      var errorCount = 0;
+      var errorMessage = "";
 
       // console.log(dsDetail);
       for (var i = 0 ; i < dataDetail.length; i++) {
         // Things[i]
         // console.log(dataDetail[i]);
         if (dataDetail[i].Jumlah === 0) {
-          Swal.fire({
-            type: 'error',
-            title: 'Woops...',
-            text: 'Jumlah Tagihan Tidak boleh 0',
-          })
+
+          errorCount += 1;
+          errorMessage = "Jumlah Tagihan tidak boleh 0";
           break;
         }
         else{
@@ -309,51 +311,65 @@
         }
       }
 
+      if ($errorCount > 0) {
+        Swal.fire({
+          type: 'error',
+          title: 'Woops...',
+          text: errorMessage,
+        });
+        $('#btSaveTagihan').text('Save');
+        $('#btSaveTagihan').attr('disabled',false);
+      }
+      else{
+        var jsonParse = {
+          "TglTransaksi"  : $('#TglTransaksi').val(),
+          "MulaiTagih"    : $("#PeriodFrom").val(),
+          "SelesaiTagih"  : $("#PeriodTo").val(),
+          "TahunAjaran"   : $('#TahunAjaranFrom').val().toString() + "-" + $('#TahunAjaranTo').val().toString(),
+          "Keterangan"    : $('#Keterangan').val(),
+          "ListSiswa"     : items_Siswa,
+          "ListDetail"    : listDataDetail
+        };
+
+        // console.log(jsonParse);
+
+
+        $.ajax({
+          async: false,
+          type: "post",
+          url: "<?=base_url()?>C_TagihanSiswa/AddMassal",
+          data: {'oParam':JSON.stringify(jsonParse)},
+          dataType: "json",
+          success: function (response) {
+            // bindGridLookupSiswa(response.data);
+            // $('#modal_Siswa').modal('show');
+
+            if (response.success == true) {
+              Swal.fire({
+                type: 'success',
+                title: 'Horay..',
+                text: 'Data Berhasil disimpan!',
+                // footer: '<a href>Why do I have this issue?</a>'
+              }).then((result)=>{
+                location.reload();
+              });
+            }
+            else{
+              Swal.fire({
+                type: 'error',
+                title: 'Woops...',
+                text: response.message,
+                // footer: '<a href>Why do I have this issue?</a>'
+              }).then((result)=>{
+                $('#btSaveTagihan').text('Save');
+                $('#btSaveTagihan').attr('disabled',false);
+              })
+            }
+          }
+        });
+      }
+
       // {"TglTransaksi":"2023-06-15","MulaiTagih":"2023-07-01","SelesaiTagih":"2024-06-01","TahunAjaran":"2022-2023","Keterangan":"","ListSiswa":[{"NIS" : "99999999","NamaSiswa" : "Prasetyo Aji Wibowo"},{"NIS" : "88888888","NamaSiswa" : "Puspitasari"}],"ListDetail":[{"KodeTagihan" : "1","NamaTagihan" : "123","Jumlah":500000}]}
-
-      var jsonParse = {
-        "TglTransaksi"  : $('#TglTransaksi').val(),
-        "MulaiTagih"    : $("#PeriodFrom").val(),
-        "SelesaiTagih"  : $("#PeriodTo").val(),
-        "TahunAjaran"   : $('#TahunAjaranFrom').val().toString() + "-" + $('#TahunAjaranTo').val().toString(),
-        "Keterangan"    : $('#Keterangan').val(),
-        "ListSiswa"     : items_Siswa,
-        "ListDetail"    : listDataDetail
-      };
-
-      // console.log(jsonParse);
-
-
-      $.ajax({
-        async: false,
-        type: "post",
-        url: "<?=base_url()?>C_TagihanSiswa/AddMassal",
-        data: {'oParam':JSON.stringify(jsonParse)},
-        dataType: "json",
-        success: function (response) {
-          // bindGridLookupSiswa(response.data);
-          // $('#modal_Siswa').modal('show');
-
-          if (response.success == true) {
-            Swal.fire({
-              type: 'success',
-              title: 'Horay..',
-              text: 'Data Berhasil disimpan!',
-              // footer: '<a href>Why do I have this issue?</a>'
-            }).then((result)=>{
-              location.reload();
-            });
-          }
-          else{
-            Swal.fire({
-              type: 'error',
-              title: 'Woops...',
-              text: response.message,
-              // footer: '<a href>Why do I have this issue?</a>'
-            })
-          }
-        }
-      });
 
     })
     function bindGridLookupTagihan(data) {
