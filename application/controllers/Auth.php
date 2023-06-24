@@ -37,24 +37,36 @@ class Auth extends CI_Controller {
 		// var_dump($usr.' '.$pwd);
 		$Validate_username = $this->LoginMod->Validate_username($usr);
 		if($Validate_username->num_rows()>0){
-			$userid = $Validate_username->row()->id;
-			$pwd_decript =$Validate_username->row()->password;
-			// var_dump($this->encryption->decrypt($pwd_decript));
-			$pass_valid = $this->encryption->decrypt($Validate_username->row()->password);
-			// var_dump($this->encryption->decrypt($Validate_username->row()->password));
-			// $get_Validation = $this->LoginMod->Validate_Login($userid,$this->encryption->encrypt($pwd));
-			if($pass_valid == $pwd){
-				$sess_data['userid']=$userid;
+			// var_dump($Validate_username->result());
+			if ($Validate_username->row()->verified == '0') {
+				$sess_data['userid']=$Validate_username->row()->id;
 				$sess_data['NamaUser'] = $Validate_username->row()->nama;
 				$sess_data['username'] = $Validate_username->row()->username;
 				$this->session->set_userdata($sess_data);
+
 				$data['success'] = true;
-				$data['username'] = $Validate_username->row()->username;
-				$data['unique_id'] = $Validate_username->row()->id;
+				$data['message'] = "changepass";
 			}
 			else{
-				$data['success'] = false;
-				$data['message'] = 'L-01'; // User password doesn't match
+				$userid = $Validate_username->row()->id;
+				$pwd_decript =$Validate_username->row()->password;
+				// var_dump($this->encryption->decrypt($pwd_decript));
+				$pass_valid = $this->encryption->decrypt($Validate_username->row()->password);
+				// var_dump($this->encryption->decrypt($Validate_username->row()->password));
+				// $get_Validation = $this->LoginMod->Validate_Login($userid,$this->encryption->encrypt($pwd));
+				if($pass_valid == $pwd){
+					$sess_data['userid']=$userid;
+					$sess_data['NamaUser'] = $Validate_username->row()->nama;
+					$sess_data['username'] = $Validate_username->row()->username;
+					$this->session->set_userdata($sess_data);
+					$data['success'] = true;
+					$data['username'] = $Validate_username->row()->username;
+					$data['unique_id'] = $Validate_username->row()->id;
+				}
+				else{
+					$data['success'] = false;
+					$data['message'] = 'L-01'; // User password doesn't match
+				}
 			}
 		}
 		else{
@@ -143,16 +155,33 @@ class Auth extends CI_Controller {
 	{
 		$data = array('success' => false ,'message'=>array(),'id' =>'');
 
-		$uname = $this->input->post('user');
-		$newpass = $this->encryption->encrypt($this->input->post('pass'));
-		$id = $this->input->post('id');
-		$call =$this->ModelsExecuteMaster->ExecUpdate(array('password'=>$newpass),array('id'=>$id),'users');
-		if ($call) {
-			$data['success'] = true;
+		$username = $this->input->post('username');
+		$password = $this->input->post('password');
+		$repassword = $this->input->post('repassword');
+
+		if ($password != $repassword) {
+			$data['success'] = false;
+			$data['message'] = "Kombinasi Password berbeda";
+			goto jump;
 		}
 		else{
-			$data['message'] = 'Gagal Update password';
+			$getUser = $this->ModelsExecuteMaster->FindData(array('username'=>$username,'verified'=>0),'users');
+			if ($getUser->num_rows() > 0) {
+				$call =$this->ModelsExecuteMaster->ExecUpdate(array('password'=>$this->encryption->encrypt($repassword),'verified'=>"1"),array('username'=>$username),'users');
+				if ($call) {
+					$data['success'] = true;
+				}
+				else{
+					$data['message'] = 'Gagal Update password';
+				}
+			}
+			else{
+				$data['success'] = false;
+				$data['message'] = "User sudah diverifikasi, Silahkan Login";
+				goto jump;
+			}
 		}
+		jump:
 		echo json_encode($data);
 	}
 	public function GetSidebar()

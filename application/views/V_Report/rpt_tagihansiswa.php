@@ -166,9 +166,29 @@
     });
     $(document).ready(function () {
       ResetData();
-      var where_field = '';
-      var where_value = '';
+      var username = '<?php echo $this->session->userdata('username') ?>';
+      // console.log(username)
+      var NamaSiswa = '';
+      var Kelas = '';
+      var Jurusan = '';
       var table = 'users';
+
+      $.ajax({
+        async : false,
+        type: "post",
+        url: "<?=base_url()?>C_Siswa/Read",
+        data: {NIS : username,Kelas:'', Jurusan:'',textSearch:''},
+        dataType: "json",
+        success: function (response) {
+          $.each(response.data,function (k,v) {
+            // console.log(v.KelompokUsaha);
+            // $('#KodePenyakit').val(v.KodePenyakit).change;
+            NamaSiswa = v.NamaSiswa;
+            $('#Kelas').val(v.Kelas);
+            $('#Jurusan').val(v.Jurusan);
+          });
+        }
+      });
 
       $.ajax({
         async: false,
@@ -401,10 +421,10 @@
                       LinkAccess = "";
 
                       if (cellInfo.data.TotalTagihan == 0) {
-                        LinkAccess = "<button class='btn btn-primary StartPay' onClick =Pembayaran('"+cellInfo.data.NoTransaksi+"') disabled>Bayar</button>";
+                        LinkAccess = "<span class='btn btn-success'>Lunas</span>";
                       }
                       else{
-                        LinkAccess = "<button class='btn btn-primary StartPay' onClick =Pembayaran('"+cellInfo.data.NoTransaksi+"')>Bayar</button>";
+                        LinkAccess = "<span class='btn btn-danger'>Belum Lunas</span>";
                       }
                       
                       // console.log();

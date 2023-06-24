@@ -113,7 +113,10 @@ class home extends CI_Controller {
 	{
 		$this->load->view('Index');
 	}
-
+	public function changePass()
+	{
+		$this->load->view('changepassword');
+	}
 	// Master Data
 
 	public function mstr_jurusan()
@@ -136,6 +139,10 @@ class home extends CI_Controller {
 	{
 		$this->load->view('V_Master/JenisTagihan');
 	}
+	public function profile()
+	{
+		$this->load->view('V_Auth/profile');
+	}
 	// Laporan
 
 	// TRX
@@ -156,12 +163,31 @@ class home extends CI_Controller {
 		$this->load->view('V_Transaksi/view_bukukas');
 	}
 	// TRX
-	public function lap_attlog()
+	public function rptbuktibayar($value)
 	{
-		$this->load->view('V_Laporan/AttLog');
+		$data['NoTransaksi'] = $value;
+		$this->load->view('V_Report/rpt_buktibayar',$data);
 	}
-	public function lap_rekapabsen()
+	public function rpttagihansiswa()
 	{
-		$this->load->view('V_Laporan/LaporanRekapAbsen');
+		$this->load->view('V_Report/rpt_tagihansiswa');
+	}
+	public function viewpembayaransiswa()
+	{
+		$this->load->view('V_Report/view_penerimaanpembayaran');
+	}
+	public function rptpembayaransiswa($oParam)
+	{
+		$data['oParam'] = $oParam;
+		$this->load->view('V_Report/rpt_pembayaranpersiswa',$data);
+	}
+	public function viewkeuangan()
+	{
+		$this->load->view('V_Report/view_laporankeuangan');
+	}
+	public function rptkeuangan($oParam)
+	{
+		$data['oParam'] = $oParam;
+		$this->load->view('V_Report/rpt_laporankeuangan',$data);
 	}
 }

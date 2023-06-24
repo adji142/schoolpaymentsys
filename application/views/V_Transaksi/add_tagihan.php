@@ -311,7 +311,7 @@
         }
       }
 
-      if ($errorCount > 0) {
+      if (errorCount > 0) {
         Swal.fire({
           type: 'error',
           title: 'Woops...',

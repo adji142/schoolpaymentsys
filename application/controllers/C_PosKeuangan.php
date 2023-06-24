@@ -15,11 +15,15 @@
 			$data = array('success' => false ,'message'=>array(),'data'=>array());
 
 			$KodePosKeuangan = $this->input->post('KodePosKeuangan');
+			$JenisPos = $this->input->post('JenisPos');
 
 			$SQL = "SELECT KodePosKeuangan,NamaPos,JenisPos, CASE WHEN JenisPos = 1 THEN 'Pemasukan' ELSE CASE WHEN JenisPos = 0 THEN 'Pengeluaran' ELSE 'Unknown' END  END NamaJenisPos FROM tposkeuangan WHERE 1 = 1 ";
 			
 			if ($KodePosKeuangan != "") {
 				$SQL .= "AND KodePosKeuangan = '".$KodePosKeuangan."' ";
+			}
+			if ($JenisPos != "") {
+				$SQL .= "AND JenisPos = '".$JenisPos."' ";
 			}
 
 			$rs = $this->db->query($SQL);

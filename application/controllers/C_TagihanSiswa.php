@@ -19,6 +19,7 @@
 			$Jurusan = $this->input->post('Jurusan');
 			$Status = $this->input->post('Status');
 			$textSearch = $this->input->post('textSearch');
+			$NIS = $this->input->post('NIS');
 
 			$SQL = "SELECT * FROM (SELECT 
 					a.NoTransaksi,
@@ -63,6 +64,9 @@
 			}
 			elseif ($Status == "Close") {
 				$SQL .= " AND x.TotalTagihan = 0 ";
+			}
+			if ($NIS != "") {
+				$SQL .= " AND x.NISSiswa = '".$NIS."'";
 			}
 			$SQL .= "ORDER BY x.TglTagihan ";
 
@@ -247,6 +251,7 @@ jump:
 
 			$TglTransaksi = $oParam->TglTransaksi;
 			$Keterangan = $oParam->Keterangan;
+			$NamaUser = $oParam->NamaUser;
 
 			$Prefix = date("Ym")."2";
 
@@ -266,7 +271,9 @@ jump:
 					'NoTransaksi' => $NoTransaksi,
 					'TglTransaksi' => $TglTransaksi,
 					'TglPencatatan' => date("y-m-d h:i:s"),
-					'Keterangan' => $Keterangan
+					'Keterangan' => $Keterangan,
+					'CreatedBy' => $NamaUser,
+					'CreatedOn'	=> date("y-m-d h:i:s")
 				);
 
 				$this->ModelsExecuteMaster->ExecInsert($oDBParam,'pembayaranheader');

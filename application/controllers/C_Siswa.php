@@ -74,6 +74,7 @@
 			$Email = $this->input->post('Email');
 			$TahunAngkatan = $this->input->post('TahunAngkatan');
 
+
 			$param = array(
 				'NIS' => $NIS,
 				'NamaSiswa' => $NamaSiswa,
@@ -102,6 +103,17 @@
 				}
 			}
 			elseif ($formtype == 'edit') {
+				$param = array(
+					'NIS' => $NIS,
+					'NamaSiswa' => $NamaSiswa,
+					'AlamatSiswa' => $AlamatSiswa,
+					'NamaWali' => $NamaWali,
+					'TempatLahir' => $TempatLahir,
+					'TglLahir' => $TglLahir,
+					'NoTlpSiswa' => $NoTlpSiswa,
+					'NoTlpWali' => $NoTlpWali,
+					'Email' => $Email
+				);
 				$rs = $this->ModelsExecuteMaster->ExecUpdate($param,array('NIS'=>$NIS),$this->table);
 				if ($rs) {
 					$data['success'] = true;

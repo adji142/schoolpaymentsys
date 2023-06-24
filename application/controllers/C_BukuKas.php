@@ -1,6 +1,6 @@
 <?php 
 	class C_BukuKas extends CI_Controller {
-		private $table = 'tjenistagihan';
+		private $table = 'bukukas';
 
 		function __construct()
 		{
@@ -31,19 +31,51 @@
 		{
 			$data = array('success' => false ,'message'=>array(),'data'=>array());
 
-			$KodeTagihan = $this->input->post('KodeTagihan');
-			$NamaTagihan = $this->input->post('NamaTagihan');
-			$KodePosKeuangan = $this->input->post('KodePosKeuangan');
+			$JenisMutasi = $this->input->post('JenisMutasi');
+			$KodeAkun = $this->input->post('KodeAkun');
+			$TglTransaksi = $this->input->post('TglTransaksi');
+			$Jumlah = $this->input->post('Jumlah');
+			$Keterangan = $this->input->post('Keterangan');
 			$formtype = $this->input->post('formtype');
 
-			$param = array(
-				'KodeTagihan'		=> $KodeTagihan,
-				'NamaTagihan'		=> $NamaTagihan,
-				'KodePosKeuangan'	=> $KodePosKeuangan
-			);
-
-			$rs;
 			$errormessage = '';
+
+			if ($JenisMutasi == "1") {
+				$Prefix = "BM".date("Ym");
+				$temp = $this->GlobalVar->GetNoTransaksi($Prefix,'bukukas','BaseNum');
+				$NoTransaksi = $Prefix.str_pad($temp, 5,"0",STR_PAD_LEFT);
+
+				$param = array(
+					'TglTransaksi' => $TglTransaksi,
+					'TglPencatatan' => date("y-m-d h:i:s"),
+					'KodeAkun' => $KodeAkun,
+					'Keterangan' => $Keterangan,
+					'UangMasuk' => $Jumlah,
+					'UangKeluar' => 0,
+					'BaseNum' => $NoTransaksi,
+					'BaseLine' => 0
+				);
+			}elseif ($JenisMutasi == "0") {
+				$Prefix = "BK".date("Ym");
+				$temp = $this->GlobalVar->GetNoTransaksi($Prefix,'bukukas','BaseNum');
+				$NoTransaksi = $Prefix.str_pad($temp, 5,"0",STR_PAD_LEFT);
+
+				$param = array(
+					'TglTransaksi' => $TglTransaksi,
+					'TglPencatatan' => date("y-m-d h:i:s"),
+					'KodeAkun' => $KodeAkun,
+					'Keterangan' => $Keterangan,
+					'UangMasuk' => 0,
+					'UangKeluar' => $Jumlah,
+					'BaseNum' => $NoTransaksi,
+					'BaseLine' => 0
+				);
+			}else{
+				$data['success'] = false;
+				$data['message'] = "Invalid Cash Type";
+				goto jump;
+			}
+
 			if ($formtype == 'add') {
 				$rs = $this->ModelsExecuteMaster->ExecInsert($param,$this->table);
 				if ($rs) {
@@ -77,6 +109,7 @@
 			else{
 				$data['message'] = "Invalid Form Type";
 			}
+			jump:
 			echo json_encode($data);
 		}
 	}

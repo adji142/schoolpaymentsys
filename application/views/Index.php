@@ -29,6 +29,9 @@
     <!-- Custom Theme Style -->
     <link href="<?php echo base_url();?>Assets/build/css/custom.min.css" rel="stylesheet">
     <script src="<?php echo base_url();?>Assets/js/jquery.min.js"> </script>
+
+    <script src="<?php echo base_url();?>Assets/sweetalert2-8.8.0/package/dist/sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="<?php echo base_url();?>Assets/sweetalert2-8.8.0/package/dist/sweetalert2.min.css">
   </head>
 
   <body class="login">
@@ -68,6 +71,41 @@
           </section>
         </div>
       </div>
+
+      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modal_">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">Modal Jurusan</h4>
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="post_" data-parsley-validate class="form-horizontal form-label-left">
+                <div class="item form-group">
+                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Nama Jurusan <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6 col-sm-6 ">
+                    <input type="text" name="NamaJurusan" id="NamaJurusan" required="" placeholder="Nama Jurusan" class="form-control ">
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="formtype" id="formtype" value="add">
+                  </div>
+                </div>
+                <div class="item" form-group>
+                  <button class="btn btn-primary" id="btn_Save">Save</button>
+                </div>
+              </form>
+            </div>
+            <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              
+            </div> -->
+
+          </div>
+        </div>
+      </div>
+
     </div>
   </body>
 </html>
@@ -100,7 +138,12 @@
                 dataType: "json",
                 success:function (response) {
                     if(response.success == true){
+                      if (response.message == "changepass") {
+                        location.replace("<?=base_url()?>Home/changePass")
+                      }
+                      else{
                         location.replace("<?=base_url()?>Home")
+                      }
                     }
                     else{
                         if(response.message == 'L-01'){

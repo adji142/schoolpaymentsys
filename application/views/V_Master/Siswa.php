@@ -111,42 +111,42 @@
                   </div>
 
                   <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Tempat Lahir <span class="required">*</span>
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Tempat Lahir
                     </label>
                     <div class="col-md-6 col-sm-6 ">
-                      <input type="text" name="TempatLahir" id="TempatLahir" required="" placeholder="Tempat Lahir" class="form-control ">
+                      <input type="text" name="TempatLahir" id="TempatLahir" placeholder="Tempat Lahir" class="form-control ">
                     </div>
                   </div>
 
                   <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Tanggal Lahir <span class="required">*</span>
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Tanggal Lahir
                     </label>
                     <div class="col-md-6 col-sm-6 ">
-                      <input type="date" name="TglLahir" id="TglLahir" required="" placeholder="Tempat Lahir" class="date-picker form-control ">
+                      <input type="date" name="TglLahir" id="TglLahir" placeholder="Tempat Lahir" class="date-picker form-control ">
                     </div>
                   </div>
 
                   <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">No.Tlp Siswa(WhatsApp) <span class="required">*</span>
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">No.Tlp Siswa(WhatsApp)
                     </label>
                     <div class="col-md-6 col-sm-6 ">
-                      <input type="text" name="NoTlpSiswa" id="NoTlpSiswa" required="" placeholder="No.Tlp Siswa(WhatsApp)" class="form-control ">
+                      <input type="text" name="NoTlpSiswa" id="NoTlpSiswa" placeholder="No.Tlp Siswa(WhatsApp)" class="form-control ">
                     </div>
                   </div>
 
                   <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">No.Tlp Wali(WhatsApp) <span class="required">*</span>
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">No.Tlp Wali(WhatsApp)
                     </label>
                     <div class="col-md-6 col-sm-6 ">
-                      <input type="text" name="NoTlpWali" id="NoTlpWali" required="" placeholder="No.Tlp Wali(WhatsApp)" class="form-control ">
+                      <input type="text" name="NoTlpWali" id="NoTlpWali" placeholder="No.Tlp Wali(WhatsApp)" class="form-control ">
                     </div>
                   </div>
 
                   <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Email <span class="required">*</span>
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Email
                     </label>
                     <div class="col-md-6 col-sm-6 ">
-                      <input type="text" name="Email" id="Email" required="" placeholder="Email" class="form-control ">
+                      <input type="text" name="Email" id="Email" placeholder="Email" class="form-control ">
                     </div>
                   </div>
 

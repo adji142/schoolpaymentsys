@@ -32,7 +32,6 @@
                 <!-- <input type="text" placeholder="NIK / Nama" class="form-control"> -->
                 <br>
                 <button class="btn btn-primary" id="btSearch">Cari Data</button>
-                <a class="btn btn-danger" href="<?php echo base_url().'addtagihan' ?>">Tambah Data</a>
               </div>
               <div class="col-md-12 col-sm-12  form-group">
                 <div class="dx-viewport demo-container">
@@ -49,6 +48,74 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modal_">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Modal Tambah Mutasi Kas</h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="post_" data-parsley-validate class="form-horizontal form-label-left">
+          <div class="item form-group">
+            <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Jenis Mutasi <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 ">
+              <select class="form-control " name="JenisMutasi" id="JenisMutasi">
+                <option value="-1">Pilih Jenis Mutasi</option>
+                <option value="1">Penerimaan</option>
+                <option value="0">Pengeluaran</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="item form-group">
+            <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Pos Keuangan <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 ">
+              <select class="form-control " name="KodeAkun" id="KodeAkun">
+                <option value="">Pilih Pos Keuangan</option>
+              </select>
+            </div>
+          </div>
+          <div class="item form-group">
+            <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Tanggal Transaksi <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 ">
+              <input type="date" name="TglTransaksi" id="TglTransaksi" required="" class="date-picker form-control ">
+            </div>
+          </div>
+          <div class="item form-group">
+            <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Jumlah <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 ">
+              <input type="number" name="Jumlah" id="Jumlah" required="" placeholder="Jumlah" class="form-control ">
+              <input type="hidden" name="formtype" id="formtype" value="add">
+            </div>
+          </div>
+          <div class="item form-group">
+            <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Keterangan <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 ">
+              <input type="text" name="Keterangan" id="Keterangan" required="" class="form-control ">
+            </div>
+          </div>
+          <div class="item" form-group>
+            <button class="btn btn-primary" id="btn_Save">Save</button>
+          </div>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div> -->
+
+    </div>
+  </div>
+</div>
 <!-- /page content -->
 <?php
   require_once(APPPATH."views/parts/Footer.php");
@@ -56,6 +123,8 @@
 <script type="text/javascript">
   $(function () {
     $(document).ready(function () {
+      setEnableCommand()
+      ResetData()
       getData()
     });
     $('.close').click(function() {
@@ -65,6 +134,88 @@
       getData();
     });
 
+    $("#JenisMutasi").on('change keyup paste', function() {
+        // console.log('I am pretty sure the text box changed');
+        setEnableCommand()
+    });
+    $("#KodeAkun").on('change keyup paste', function() {
+        // console.log('I am pretty sure the text box changed');
+        setEnableCommand()
+    });
+    $("#TglTransaksi").on('change keyup paste', function() {
+        // console.log('I am pretty sure the text box changed');
+        setEnableCommand()
+    });
+    $("#Jumlah").on('change keyup paste', function() {
+        // console.log('I am pretty sure the text box changed');
+        setEnableCommand()
+    });
+    $('#JenisMutasi').change(function () {
+      $.ajax({
+        async:false,
+        type: "post",
+        url: "<?=base_url()?>C_PosKeuangan/Read",
+        data: {
+          'KodePosKeuangan' :'',
+          'JenisPos'        :$('#JenisMutasi').val()
+        },
+        dataType: "json",
+        success: function (response) {
+          // bindGrid(response.data);
+          $('#KodeAkun').empty();
+          if (response.data.length > 0) {
+            $('#KodeAkun').append('<option value="-1">Pilih Pos Keuangan</option>');
+            $.each(response.data,function (k,v) {
+              $('#KodeAkun').append('<option value="' + v.KodePosKeuangan + '">' + v.NamaPos + '</option>');
+            });
+          }
+          else{
+            $('#KodeAkun').append('<option value="-1">Pilih Pos Keuangan</option>');
+          }
+        }
+      });
+    });
+
+    $('#post_').submit(function (e) {
+      $('#btn_Save').text('Tunggu Sebentar.....');
+      $('#btn_Save').attr('disabled',true);
+
+      e.preventDefault();
+      var me = $(this);
+
+      $.ajax({
+            type    :'post',
+            url     : '<?=base_url()?>C_BukuKas/CRUD',
+            data    : me.serialize(),
+            dataType: 'json',
+            success : function (response) {
+              if(response.success == true){
+                $('#modal_').modal('toggle');
+                Swal.fire({
+                  type: 'success',
+                  title: 'Horay..',
+                  text: 'Data Berhasil disimpan!',
+                  // footer: '<a href>Why do I have this issue?</a>'
+                }).then((result)=>{
+                  location.reload();
+                });
+              }
+              else{
+                $('#modal_').modal('toggle');
+                Swal.fire({
+                  type: 'error',
+                  title: 'Woops...',
+                  text: response.message,
+                  // footer: '<a href>Why do I have this issue?</a>'
+                }).then((result)=>{
+                  $('#modal_').modal('show');
+                  $('#btn_Save').text('Save');
+                  $('#btn_Save').attr('disabled',false);
+                });
+              }
+            }
+          });
+        });
     function getData() {
       $.ajax({
         type: "post",
@@ -78,37 +229,46 @@
           // bindGrid(response.data);
           // console.log(response.data);
           var items_data=[];
-          var SaldoAwal = 0;
-          var SaldoAkhir = 0;
+          var SaldoAwal = 0.0;
+          var SaldoAkhir = 0.0;
           for (var i = 0; i < response.data.length; i++) {
             // Things[i]
             var arr = {};
             if (response.data[i]["KodeAkun"] == "99") {
               SaldoAwal = response.data[i]["SaldoAwal"];
-              SaldoAkhir += Number(SaldoAwal) + Number(response.data[i]["Pemasukan"]) - Number(response.data[i]["Pengeluaran"])
+              // SaldoAkhir += Number(SaldoAwal) + Number(response.data[i]["Pemasukan"]) - Number(response.data[i]["Pengeluaran"])
               arr = {
-                Reff : response.data[i]["Reff"],
-                SaldoAwal : SaldoAwal,
-                Pemasukan : response.data[i]["Pemasukan"],
-                Pengeluaran : response.data[i]["Pengeluaran"],
-                Saldo     : SaldoAkhir
+                KodeAkun      : response.data[i]["KodeAkun"],
+                NamaPos       : response.data[i]["NamaPos"],
+                Reff          : response.data[i]["Reff"],
+                TglTransaksi  : "",
+                Keterangan    : "",
+                // SaldoAwal     : ThousandSparator(SaldoAwal),
+                Pemasukan     : ThousandSparator(response.data[i]["Pemasukan"]),
+                Pengeluaran   : ThousandSparator(response.data[i]["Pengeluaran"]),
+                Saldo         : ThousandSparator(SaldoAwal)
               }
             }
             else{
               // console.log();
               SaldoAkhir += Number(SaldoAwal) + Number(response.data[i]["Pemasukan"]) - Number(response.data[i]["Pengeluaran"])
               arr = {
-                Reff : response.data[i]["Reff"],
-                SaldoAwal : response.data[i]["SaldoAwal"],
-                Pemasukan : response.data[i]["Pemasukan"],
-                Pengeluaran : response.data[i]["Pengeluaran"],
-                Saldo     : SaldoAkhir
+                KodeAkun      : response.data[i]["KodeAkun"],
+                NamaPos       : response.data[i]["NamaPos"],
+                Reff          : response.data[i]["Reff"],
+                TglTransaksi  : response.data[i]["TglTransaksi"],
+                Keterangan    : response.data[i]["Keterangan"],
+                // SaldoAwal     : ThousandSparator(response.data[i]["SaldoAwal"]),
+                Pemasukan     : ThousandSparator(response.data[i]["Pemasukan"]),
+                Pengeluaran   : ThousandSparator(response.data[i]["Pengeluaran"]),
+                Saldo         : ThousandSparator(SaldoAkhir)
               }
             }
             // console.log()
             items_data.push(arr);
           }
-          console.log(items_data);
+          // console.log(items_data);
+          bindGrid(items_data);
         }
       });
     }
@@ -117,7 +277,7 @@
       $("#gridContainer").dxDataGrid({
         allowColumnResizing: true,
             dataSource: data,
-            keyExpr: "NoTransaksi",
+            keyExpr: "KodeAkun",
             showBorders: true,
             allowColumnReordering: true,
             allowColumnResizing: true,
@@ -136,7 +296,7 @@
             },
             editing: {
                 mode: "row",
-                allowAdding:false,
+                allowAdding:true,
                 allowUpdating: false,
                 allowDeleting: false,
                 texts: {
@@ -149,8 +309,8 @@
                 placeholder: "Search..."
             },
             export: {
-                enabled: false,
-                fileName: "Daftar Jenis Tagihan"
+                enabled: true,
+                fileName: "Buku Kas"
             },
             selection: {
               mode: 'single',
@@ -159,12 +319,13 @@
                 {
                     dataField: "KodeAkun",
                     caption: "Kode Akun",
-                    allowEditing:false
+                    allowEditing:false,
+                    visible:false
                 },
                 {
                     dataField: "NamaPos",
                     caption: "Nama Akun",
-                    allowEditing:false
+                    allowEditing:false,
                 },
                 {
                     dataField: "Reff",
@@ -181,11 +342,11 @@
                     caption: "Keterangan",
                     allowEditing:false
                 },
-                {
-                    dataField: "SaldoAwal",
-                    caption: "Saldo Awal",
-                    allowEditing:false
-                },
+                // {
+                //     dataField: "SaldoAwal",
+                //     caption: "Saldo Awal",
+                //     allowEditing:false
+                // },
                 {
                     dataField: "Pemasukan",
                     caption: "Pemasukan",
@@ -202,6 +363,10 @@
                     allowEditing:false
                 },
             ],
+            onInitNewRow: function(e) {
+                // logEvent("InitNewRow");
+                $('#modal_').modal('show');
+            },
             onSelectionChanged(selectedItems) {
               const data = selectedItems.selectedRowsData[0];
               if (data) {
@@ -248,5 +413,28 @@
       }
       return x1 + x2;
   }
+  function ResetData() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+month+"-01";
+    var lastDayofYear = now.getFullYear()+"-"+month+"-"+day;
+
+    $('#FromDate').val(today);
+    $('#ToDate').val(lastDayofYear);
+  }
+
+  function setEnableCommand() {
+
+      if ($('#JenisMutasi').val() != "-1" && $('#KodeAkun').val() != "-1" && $('#TglTransaksi').val() != "" && $('#Jumlah').val() != 0) {
+        $('#btn_Save').prop('disabled', false)
+      }
+      else{
+        $('#btn_Save').prop('disabled', true)
+      }
+
+    }
   });
 </script>

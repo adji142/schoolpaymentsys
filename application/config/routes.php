@@ -138,6 +138,7 @@ $route['permission'] = 'Home/permission';
 $route['role'] = 'Home/role';
 $route['permissionrole/(:num)'] = 'Home/permissionrole/$1';
 $route['user'] = 'Home/user';
+$route['profile'] = 'Home/profile';
 
 // Master Data
 $route['jurusan'] = 'Home/mstr_jurusan';
@@ -152,5 +153,9 @@ $route['addtagihan'] = 'Home/tambahtagihan';
 $route['pembayaran'] = 'Home/pembayaran';
 $route['bukukas'] = 'Home/bukukas';
 // Laporan
-$route['attlog'] = 'Home/lap_attlog';
-$route['rekapabsen'] = 'Home/lap_rekapabsen';
+$route['buktibayar/(:num)'] = 'Home/rptbuktibayar/$1';
+$route['tagihansiswa'] = 'Home/rpttagihansiswa';
+$route['viewpembayaran'] = 'Home/viewpembayaransiswa';
+$route['rptpembayaran/(:any)'] = 'Home/rptpembayaransiswa/$1';
+$route['viewkeuangan'] = 'Home/viewkeuangan';
+$route['rptkeuangan/(:any)'] = 'Home/rptkeuangan/$1';
