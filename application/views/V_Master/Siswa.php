@@ -17,12 +17,47 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
+                    <div class="row">
+                      <div class="col-md-3 col-sm-12  form-group">
+                        Jurusan
+                        <select id="Jurusan" name="Jurusan" class="form-control">
+                          <option value="">Pilih Jurusan..</option>
+                          <?php
+                            $rs = $this->ModelsExecuteMaster->GetData('tjurusan')->result();
+
+                            foreach ($rs as $key) {
+                              echo "<option value = '".$key->id."'>".$key->NamaJurusan."</option>";
+                            }
+                          ?>
+                        </select>
+                      </div>
+
+                      <div class="col-md-3 col-sm-12  form-group">
+                        Kelas
+                        <select id="Kelas" name="Kelas" class="form-control">
+                          <option value="">Pilih Kelas..</option>
+                          <?php
+                            $rs = $this->ModelsExecuteMaster->GetData('tkelas')->result();
+
+                            foreach ($rs as $key) {
+                              echo "<option value = '".$key->id."'>".$key->NamaKelas."</option>";
+                            }
+                          ?>
+                        </select>
+                      </div>
+                      <div class="col-md-4 col-sm-12  form-group">
+                        <!-- <input type="text" placeholder="NIK / Nama" class="form-control"> -->
+                        <br>
+                        <button class="btn btn-primary" id="btSearch">Cari Data</button>
+                        <button class="btn btn-warning" id="btNaikKelas">Naik Kelas</button>
+                      </div>
                       <div class="dx-viewport demo-container">
                         <div id="data-grid-demo">
                           <div id="gridContainer">
                           </div>
                         </div>
                       </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -174,6 +209,80 @@
             </div>
           </div>
         </div>
+
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modalNaikKelas">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Modal Naik Kelas</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="item form-group">
+                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Jurusan <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6 col-sm-6 ">
+                    <select class="form-control " name="NaikJurusan" id="NaikJurusan">
+                      <option value="">Pilih Jurusan</option>
+                      <?php
+                        $rs = $this->ModelsExecuteMaster->GetData('tjurusan')->result();
+
+                        foreach ($rs as $key) {
+                          echo "<option value = '".$key->id."'>".$key->NamaJurusan."</option>";
+                        }
+                      ?>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="item form-group">
+                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Kelas <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6 col-sm-6 ">
+                    <select class="form-control " name="KelasFrom" id="KelasFrom">
+                      <option value="">Pilih Kelas</option>
+                      <?php
+                        $rs = $this->ModelsExecuteMaster->GetData('tkelas')->result();
+
+                        foreach ($rs as $key) {
+                          echo "<option value = '".$key->id."'>".$key->NamaKelas."</option>";
+                        }
+                      ?>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="item form-group">
+                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Naik ke Kelas <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6 col-sm-6 ">
+                    <select class="form-control " name="KelasTo" id="KelasTo">
+                      <option value="">Pilih Kelas</option>
+                      <?php
+                        $rs = $this->ModelsExecuteMaster->GetData('tkelas')->result();
+
+                        foreach ($rs as $key) {
+                          echo "<option value = '".$key->id."'>".$key->NamaKelas."</option>";
+                        }
+                      ?>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="item" form-group>
+                  <button class="btn btn-primary" id="btn_SaveNaikKelas">Save</button>
+                </div>
+              </div>
+              <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                
+              </div> -->
+
+            </div>
+          </div>
+        </div>
 <?php
   require_once(APPPATH."views/parts/Footer.php");
 ?>
@@ -184,15 +293,7 @@
           var where_value = '';
           var table = 'users';
 
-          $.ajax({
-            type: "post",
-            url: "<?=base_url()?>C_Siswa/Read",
-            data: {'NIS':''},
-            dataType: "json",
-            success: function (response) {
-              bindGrid(response.data);
-            }
-          });
+          populateData();
 
           var thisYear = new Date().getFullYear();
           var incrementUp = 5;
@@ -218,6 +319,18 @@
 
 
         });
+
+        function populateData() {
+          $.ajax({
+            type: "post",
+            url: "<?=base_url()?>C_Siswa/Read",
+            data: {'NIS':'','Kelas':$('#Kelas').val(),'Jurusan':$('#Jurusan').val()},
+            dataType: "json",
+            success: function (response) {
+              bindGrid(response.data);
+            }
+          });
+        }
         $('#post_').submit(function (e) {
           $('#btn_Save').text('Tunggu Sebentar.....');
           $('#btn_Save').attr('disabled',true);
@@ -226,41 +339,85 @@
           var me = $(this);
 
           $.ajax({
-                type    :'post',
-                url     : '<?=base_url()?>C_Siswa/CRUD',
-                data    : me.serialize(),
-                dataType: 'json',
-                success : function (response) {
-                  if(response.success == true){
-                    $('#modal_').modal('toggle');
-                    Swal.fire({
-                      type: 'success',
-                      title: 'Horay..',
-                      text: 'Data Berhasil disimpan!',
-                      // footer: '<a href>Why do I have this issue?</a>'
-                    }).then((result)=>{
-                      location.reload();
-                    });
-                  }
-                  else{
-                    $('#modal_').modal('toggle');
-                    Swal.fire({
-                      type: 'error',
-                      title: 'Woops...',
-                      text: response.message,
-                      // footer: '<a href>Why do I have this issue?</a>'
-                    }).then((result)=>{
-                      $('#modal_').modal('show');
-                      $('#btn_Save').text('Save');
-                      $('#btn_Save').attr('disabled',false);
-                    });
-                  }
-                }
-              });
-            });
+            type    :'post',
+            url     : '<?=base_url()?>C_Siswa/CRUD',
+            data    : me.serialize(),
+            dataType: 'json',
+            success : function (response) {
+              if(response.success == true){
+                $('#modal_').modal('toggle');
+                Swal.fire({
+                  type: 'success',
+                  title: 'Horay..',
+                  text: 'Data Berhasil disimpan!',
+                  // footer: '<a href>Why do I have this issue?</a>'
+                }).then((result)=>{
+                  location.reload();
+                });
+              }
+              else{
+                $('#modal_').modal('toggle');
+                Swal.fire({
+                  type: 'error',
+                  title: 'Woops...',
+                  text: response.message,
+                  // footer: '<a href>Why do I have this issue?</a>'
+                }).then((result)=>{
+                  $('#modal_').modal('show');
+                  $('#btn_Save').text('Save');
+                  $('#btn_Save').attr('disabled',false);
+                });
+              }
+            }
+          });
+        });
         $('.close').click(function() {
           location.reload();
         });
+        $('#btSearch').click(function () {
+          populateData();
+        });
+        $('#btNaikKelas').click(function () {
+          $('#modalNaikKelas').modal('show');
+        });
+
+        $('#btn_SaveNaikKelas').click(function () {
+          $('#btn_SaveNaikKelas').text('Tunggu Sebentar.....');
+          $('#btn_SaveNaikKelas').attr('disabled',true);
+
+          $.ajax({
+            type    :'post',
+            url     : '<?=base_url()?>C_Siswa/fnNaikKelas',
+            data    : {'NaikJurusan' : $('#NaikJurusan').val(),'KelasFrom': $('#KelasFrom').val(),'KelasTo': $('#KelasTo').val()},
+            dataType: 'json',
+            success : function (response) {
+              if(response.success == true){
+                $('#modalNaikKelas').modal('toggle');
+                Swal.fire({
+                  type: 'success',
+                  title: 'Horay..',
+                  text: 'Data Berhasil disimpan!',
+                  // footer: '<a href>Why do I have this issue?</a>'
+                }).then((result)=>{
+                  location.reload();
+                });
+              }
+              else{
+                $('#modalNaikKelas').modal('toggle');
+                Swal.fire({
+                  type: 'error',
+                  title: 'Woops...',
+                  text: response.message,
+                  // footer: '<a href>Why do I have this issue?</a>'
+                }).then((result)=>{
+                  $('#modalNaikKelas').modal('show');
+                  $('#btn_SaveNaikKelas').text('Save');
+                  $('#btn_SaveNaikKelas').attr('disabled',false);
+                });
+              }
+            }
+          });
+        })
     function GetData(id) {
       var where_field = 'id';
       var where_value = id;

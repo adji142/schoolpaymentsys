@@ -138,5 +138,34 @@
 			}
 			echo json_encode($data);
 		}
+
+		public function fnNaikKelas()
+		{
+			$data = array('success' => false ,'message'=>array(),'data'=>array());
+
+			$NaikJurusan 	= $this->input->post('NaikJurusan');
+			$KelasFrom 		= $this->input->post('KelasFrom');
+			$KelasTo 		= $this->input->post('KelasTo');
+
+			$oParam = array(
+				'Kelas' => $KelasTo
+			);
+
+			$oWhere = array(
+				'Jurusan'	=> $NaikJurusan,
+				'Kelas'		=> $KelasFrom
+			);
+
+			$rs = $this->ModelsExecuteMaster->ExecUpdate($oParam,$oWhere,$this->table);
+			if ($rs) {
+				$data['success'] = true;
+				$data['message'] = "Data Berhasil Disimpan";
+			}
+			else{
+				$data['message'] = "Gagal Edit data Siswa";
+			}
+
+			echo json_encode($data);
+		}
 	}
 ?>

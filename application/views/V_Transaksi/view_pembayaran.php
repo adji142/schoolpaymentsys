@@ -59,8 +59,8 @@
               <div class="col-md-2 col-sm-12  form-group">
                 Status Document
                 <select id="Status" name="Status" class="form-control">
-                  <option value="Open">Open</option>
-                  <option value="Close">Close</option>
+                  <option value="Open">Belum Lunas</option>
+                  <option value="Close">Lunas</option>
                   <option value="">Semua</option>
                 </select>
               </div>
