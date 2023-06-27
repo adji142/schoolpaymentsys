@@ -65,13 +65,13 @@
 	                    	<div class="col-md-6 col-sm-12  form-group">
 	                    		<center>
 	                    			<b>Yang Membuat</b> <br><br><br>
-	                          		Tata Usaha
+	                          		Bety Rosiana, S.Pd.
 	                    		</center>
 	                        </div>
 	                        <div class="col-md-6 col-sm-12  form-group">
 	                    		<center>
 	                    			<b>Yang Menerima</b> <br><br><br>
-	                          		Sekretaris Bendahara
+	                          		Santrinitas Yulia DR, S.Pd., M.Pd.
 	                    		</center>
 	                        </div>
 	                    </div>
