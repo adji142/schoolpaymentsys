@@ -35,7 +35,7 @@
 					SUM(a1.JumlahTagihan) - COALESCE(d.Jumlah, 0) TotalTagihan
 				FROM tagihanheader a
 				LEFT JOIN tagihandetail a1 on a.NoTransaksi = a1.NoTransaksi
-				LEFT JOIN tsiswa b ON A.NISSiswa = b.NIS
+				LEFT JOIN tsiswa b ON a.NISSiswa = b.NIS
 				LEFT JOIN tjurusan c on b.Jurusan = c.id
 				LEFT JOIN tkelas d on b.Kelas = d.id 
 				LEFT JOIN (
