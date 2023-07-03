@@ -150,10 +150,6 @@
 			$tMulaiTagih = new DateTime($oParam->MulaiTagih);
 			$tSelesaiTagih = new DateTime($oParam->SelesaiTagih);
 
-			$Prefix = date("Ym")."1";
-
-			$temp = $this->GlobalVar->GetNoTransaksi($Prefix,'tagihanheader');
-			$NoTransaksi = $Prefix.str_pad($temp, 5,"0",STR_PAD_LEFT);
 			// var_dump($NoTransaksi);
 
 			$iterateCount = $tMulaiTagih->diff($tSelesaiTagih)->m;
@@ -179,9 +175,15 @@
 							// var_dump(date('Y-m-d',$TglTagihan));
 							$TglJatuhTempo = strtotime(date('Y-m-d',$TglTagihan).' + 7 days');
 							
-							$fixNoTrans = $NoTransaksi.$i.$row;
+							// $fixNoTrans = $NoTransaksi.$i.$row;
+
+							$Prefix = date("Ym")."1".$key->NIS;
+
+							$temp = $this->GlobalVar->GetNoTransaksi($Prefix,'tagihanheader');
+							$NoTransaksi = $Prefix.str_pad($temp, 3,"0",STR_PAD_LEFT);
+							
 							$oDBParam = array(
-								'NoTransaksi' => $fixNoTrans,
+								'NoTransaksi' => $NoTransaksi,
 								'TglTransaksi' => $oParam->TglTransaksi,
 								'TglPencatatan' => date("y-m-d h:i:s"),
 								'TglTagihan' => date('Y-m-d',$TglTagihan),
@@ -198,7 +200,7 @@
 							$lineNum = 0;
 							foreach ($objDetail as $keyDetail) {
 								$oDBParamDetail = array(
-									'NoTransaksi' => $fixNoTrans,
+									'NoTransaksi' => $NoTransaksi,
 									'LineNumber' => $lineNum,
 									'KodeItemTagihan' => $keyDetail->KodeTagihan,
 									'NamaItemTagihan' => $keyDetail->NamaTagihan,

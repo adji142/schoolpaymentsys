@@ -279,7 +279,7 @@
     $('#btSaveTagihan').click(function () {
       // setEnableCommand();
       // Validasi
-      $('#btSaveTagihan').text('Save');
+      $('#btSaveTagihan').text('Tunggu Sebentar ...');
       $('#btSaveTagihan').attr('disabled',true);
 
       var dataGridDetail = $("#gridContainerDetail").dxDataGrid("instance");

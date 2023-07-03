@@ -146,6 +146,7 @@ $route['kelas'] = 'Home/mstr_kelas';
 $route['siswa'] = 'Home/mstr_siswa';
 $route['poskeu'] = 'Home/mstr_poskeuangan';
 $route['jenistagihan'] = 'Home/mstr_jenistagihan';
+$route['bank'] = 'Home/mstr_bank';
 
 // Transaksi
 $route['tagihan'] = 'Home/tagihansiswa';

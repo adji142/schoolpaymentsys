@@ -3,8 +3,11 @@
     if($user_id != ''){
         echo "<script>location.replace('".base_url()."home');</script>";
     }
-    delete_cookie('ci_session');
-    $this->session->sess_destroy();
+    else{
+      delete_cookie('ci_session');
+      $this->session->sess_destroy();
+      // echo "<script>location.replace('".base_url()."');</script>";
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,6 +45,12 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
+            <div id="row">
+              <!-- <div id="col"></div> -->
+              <center>
+                <img src="<?php echo base_url().'Assets/images/logo.png' ?>" width='50%'>
+              </center>
+            </div>
             <form id="loginform">
               <h1>Login Form</h1>
               <div>

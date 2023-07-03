@@ -143,6 +143,10 @@ class home extends CI_Controller {
 	{
 		$this->load->view('V_Auth/profile');
 	}
+	public function mstr_bank()
+	{
+		$this->load->view('V_Master/Bank');
+	}
 	// Laporan
 
 	// TRX
