@@ -91,12 +91,14 @@
                   <div class="item form-group">
                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Password <span class="required">*</span>
                     </label>
-                    <div class="col-md-6 col-sm-6 ">
+                    <div class="col-md-6 col-sm-6 has-feedback">
                       <input type="Password" name="pass" id="pass" required="" placeholder="Password" class="form-control ">
+                      <span class="fa fa-eye form-control-feedback right" aria-hidden="true" id="showPassword"></span>
                     </div>
+                    </label>
                   </div>
                   <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Role <span class="required">*</span>
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Level User <span class="required">*</span>
                     </label>
                     <div class="col-md-12 col-sm-12 ">
                       <select class="form-control col-md-6" id="roles" name="roles" >
@@ -206,6 +208,10 @@
         $('.close').click(function() {
           location.reload();
         });
+        $('#showPassword').click(function () {
+          $('#pass').get(0).type = 'text';
+          
+        })
     function GetData(id) {
       var where_field = 'id';
       var where_value = id;
@@ -217,8 +223,9 @@
             dataType: "json",
             success: function (response) {
               $.each(response.data,function (k,v) {
-                console.log(response.data);
+                console.log(response);
                 // $('#KodePenyakit').val(v.KodePenyakit).change;
+                // console.log(response.decript);
                 $('#uname').val(v.username);
                 $('#nama').val(v.nama);
                 $('#pass').val(response.decript);

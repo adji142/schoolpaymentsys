@@ -290,6 +290,7 @@
                   text: 'Data Berhasil disimpan!',
                   // footer: '<a href>Why do I have this issue?</a>'
                 }).then((result)=>{
+                  window.open("<?php echo base_url()?>buktibayar/"+response.NoTransaksi, "_blank");
                   location.reload();
                 });
               }

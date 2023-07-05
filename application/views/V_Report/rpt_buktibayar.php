@@ -28,7 +28,7 @@
       $SQL = "
         SELECT 
           a.NoTransaksi,
-          a.TglTransaksi,
+          DATE_FORMAT(a.TglTransaksi, '%d/%m/%Y') TglTransaksi,
           TIME(a.TglPencatatan) JamTransaksi,
           e.NIS,
           e.NamaSiswa,

@@ -9,6 +9,26 @@
     <div class="col-md-12">
       <div class="">
         <div class="x_content">
+          <row>
+            <div class="col-md-12">
+              <center>
+                <img src="<?php echo base_url().'Assets/images/logo.png' ?>" width='30%'>
+              </center>
+            </div>
+            <div class="col-md-12">
+              <center>
+                <H1>
+                  SELAMAT DATANG
+                </H1>
+                <h6>
+                  Sistem Penctatan Keuangan SMK Al Islam KaliJambe
+                </h6>
+                <H3>
+                  <?php echo $this->session->userdata('NamaUser'); ?>
+                </H3>
+              </center>
+            </div>
+          </row>
         </div>
       </div>
     </div>

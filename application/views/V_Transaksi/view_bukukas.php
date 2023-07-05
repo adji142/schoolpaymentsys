@@ -244,9 +244,9 @@
                 TglTransaksi  : "",
                 Keterangan    : "",
                 // SaldoAwal     : ThousandSparator(SaldoAwal),
-                Pemasukan     : ThousandSparator(response.data[i]["Pemasukan"]),
-                Pengeluaran   : ThousandSparator(response.data[i]["Pengeluaran"]),
-                Saldo         : ThousandSparator(SaldoAwal)
+                Pemasukan     : parseFloat(response.data[i]["Pemasukan"]),
+                Pengeluaran   : parseFloat(response.data[i]["Pengeluaran"]),
+                Saldo         : parseFloat(SaldoAwal)
               }
             }
             else{
@@ -259,9 +259,9 @@
                 TglTransaksi  : response.data[i]["TglTransaksi"],
                 Keterangan    : response.data[i]["Keterangan"],
                 // SaldoAwal     : ThousandSparator(response.data[i]["SaldoAwal"]),
-                Pemasukan     : ThousandSparator(response.data[i]["Pemasukan"]),
-                Pengeluaran   : ThousandSparator(response.data[i]["Pengeluaran"]),
-                Saldo         : ThousandSparator(SaldoAkhir)
+                Pemasukan     : parseFloat(response.data[i]["Pemasukan"]),
+                Pengeluaran   : parseFloat(response.data[i]["Pengeluaran"]),
+                Saldo         : parseFloat(SaldoAkhir)
               }
             }
             // console.log()
@@ -327,21 +327,21 @@
                     caption: "Nama Akun",
                     allowEditing:false,
                 },
-                {
-                    dataField: "Reff",
-                    caption: "Reff",
-                    allowEditing:false
-                },
-                {
-                    dataField: "TglTransaksi",
-                    caption: "Tgl. Transaksi",
-                    allowEditing:false
-                },
-                {
-                    dataField: "Keterangan",
-                    caption: "Keterangan",
-                    allowEditing:false
-                },
+                // {
+                //     dataField: "Reff",
+                //     caption: "Reff",
+                //     allowEditing:false
+                // },
+                // {
+                //     dataField: "TglTransaksi",
+                //     caption: "Tgl. Transaksi",
+                //     allowEditing:false
+                // },
+                // {
+                //     dataField: "Keterangan",
+                //     caption: "Keterangan",
+                //     allowEditing:false
+                // },
                 // {
                 //     dataField: "SaldoAwal",
                 //     caption: "Saldo Awal",
@@ -350,17 +350,20 @@
                 {
                     dataField: "Pemasukan",
                     caption: "Pemasukan",
-                    allowEditing:false
+                    allowEditing:false,
+                    format: 'fixedPoint',
                 },
                 {
                     dataField: "Pengeluaran",
                     caption: "Pengeluaran",
-                    allowEditing:false
+                    allowEditing:false,
+                    format: 'fixedPoint',
                 },
                 {
                     dataField: "Saldo",
                     caption: "Saldo",
-                    allowEditing:false
+                    allowEditing:false,
+                    format: 'fixedPoint',
                 },
             ],
             onInitNewRow: function(e) {

@@ -177,21 +177,21 @@
 	                    caption: "Nama Akun",
 	                    allowEditing:false,
 	                },
-	                {
-	                    dataField: "Reff",
-	                    caption: "Reff",
-	                    allowEditing:false
-	                },
-	                {
-	                    dataField: "TglTransaksi",
-	                    caption: "Tgl. Transaksi",
-	                    allowEditing:false
-	                },
-	                {
-	                    dataField: "Keterangan",
-	                    caption: "Keterangan",
-	                    allowEditing:false
-	                },
+	                // {
+	                //     dataField: "Reff",
+	                //     caption: "Reff",
+	                //     allowEditing:false
+	                // },
+	                // {
+	                //     dataField: "TglTransaksi",
+	                //     caption: "Tgl. Transaksi",
+	                //     allowEditing:false
+	                // },
+	                // {
+	                //     dataField: "Keterangan",
+	                //     caption: "Keterangan",
+	                //     allowEditing:false
+	                // },
 	                {
 	                    dataField: "Pemasukan",
 	                    caption: "Pemasukan",
