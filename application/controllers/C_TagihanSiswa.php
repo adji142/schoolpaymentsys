@@ -23,8 +23,8 @@
 
 			$SQL = "SELECT * FROM (SELECT 
 					a.NoTransaksi,
-					a.TglTagihan,
-					a.TglJatuhTempo,
+					DATE_FORMAT(a.TglTagihan,'%d/%m/%Y') TglTagihan,
+					DATE_FORMAT(a.TglJatuhTempo, '%d/%m/%Y') TglJatuhTempo,
 					a.NISSiswa,
 					a.NamaSiswa,
 					a.TahunAjaran,
@@ -47,7 +47,7 @@
 					FROM pembayarandetail x
 					GROUP BY x.BaseNum,x.BaseLine,x.KodeItemTagihan
 				)d on a1.NoTransaksi = d.BaseNum AND a1.LineNumber = d.BaseLine
-				WHERE a.TglTransaksi BETWEEN '".$FromDate."' AND '".$ToDate."' ";
+				WHERE a.TglTagihan BETWEEN '".$FromDate."' AND '".$ToDate."' ";
 
 			if ($Kelas != "") {
 				$SQL .= " AND b.Kelas = '".$Kelas."' ";
@@ -243,7 +243,7 @@ jump:
 
 		public function BayarTagihan()
 		{
-			$data = array('success' => false ,'message'=>array(),'data'=>array());
+			$data = array('success' => false ,'message'=>array(),'data'=>array(),'NoTransaksi'=>'');
 
 			/*
 				SAMPLE JSON FORMAT
@@ -263,6 +263,8 @@ jump:
 
 			$nError = 0;
 			$sError = '';
+
+			$BaseNum = '';
 
 			$this->db->trans_begin();
 
@@ -293,6 +295,8 @@ jump:
 							'BaseLine' => $key->BaseLine
 						);
 						$this->ModelsExecuteMaster->ExecInsert($oDBParamDetail,'pembayarandetail');
+
+						$BaseNum = $key->BaseNum;
 						$lineNum += 1;
 					}
 				}
@@ -317,6 +321,7 @@ jump:
 			    $this->db->trans_commit();
 			    $data['success'] = true;
 				$data['message'] = "Data Berhasil disimpan";
+				$data['NoTransaksi'] = $BaseNum;
 			}
 			echo json_encode($data);
 		}

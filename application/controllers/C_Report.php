@@ -38,7 +38,7 @@
 					h.NamaJurusan,
 					CONCAT(g.NamaKelas,' - ',h.NamaJurusan) ConcatKelas,
 					b.NoTransaksi,
-					b.TglTransaksi,
+					DATE_FORMAT(b.TglTransaksi,'%d/%m/%Y') TglTransaksi,
 					b.Keterangan,
 					a.Jumlah
 				FROM pembayarandetail a
