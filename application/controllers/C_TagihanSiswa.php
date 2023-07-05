@@ -125,7 +125,7 @@
 					FROM pembayarandetail a
 					LEFT JOIN pembayaranheader b on a.NoTransaksi = b.NoTransaksi
 					WHERE a.BaseNum = '".$NoTransaksi."'";
-			$SQL .= " ORDER BY B.TglPencatatan DESC ";
+			$SQL .= " ORDER BY b.TglPencatatan DESC ";
 
 
 			$rs = $this->db->query($SQL);
