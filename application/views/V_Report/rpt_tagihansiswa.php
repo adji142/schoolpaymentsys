@@ -200,6 +200,7 @@
           'Kelas':$('#Kelas').val(),
           'Jurusan':$('#Jurusan').val(),
           'Status':$('#Status').val(),
+          'NIS' : username
         },
         dataType: "json",
         success: function (response) {
@@ -226,6 +227,8 @@
       location.reload();
     });
     $('#btSearch').click(function () {
+      var username = '<?php echo $this->session->userdata('username') ?>';
+
       $.ajax({
         type: "post",
         url: "<?=base_url()?>C_TagihanSiswa/ReadHeader",
@@ -235,6 +238,7 @@
           'Kelas':$('#Kelas').val(),
           'Jurusan':$('#Jurusan').val(),
           'Status':$('#Status').val(),
+          'NIS' : username
         },
         dataType: "json",
         success: function (response) {
