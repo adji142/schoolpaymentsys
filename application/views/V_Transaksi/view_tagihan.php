@@ -21,11 +21,11 @@
             <div class="row">
               <div class="col-md-3 col-sm-12  form-group">
                 Tgl Awal
-                <input type="date" id="FromDate" name="FromDate" class="form-control">
+                <input type="date" id="FromDate" name="FromDate" class="form-control" data-date="" data-date-format="DD/MM/YYYY">
               </div>
               <div class="col-md-3 col-sm-12  form-group">
                 Tgl Akhir
-                <input type="date" id="ToDate" name="ToDate" class="form-control">
+                <input type="date" id="ToDate" name="ToDate" class="form-control" data-date="" data-date-format="DD/MM/YYYY">
               </div>
 
               <div class="col-md-3 col-sm-12  form-group">
@@ -101,6 +101,13 @@
 <script type="text/javascript">
   $(function () {
     $(document).ready(function () {
+      $("input").on("change", function() {
+        this.setAttribute(
+            "data-date",
+            moment(this.value, "YYYY-MM-DD")
+            .format( this.getAttribute("data-date-format") )
+        )
+      }).trigger("change")
       ResetData();
       var where_field = '';
       var where_value = '';

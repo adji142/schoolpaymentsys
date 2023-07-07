@@ -21,7 +21,7 @@
                   SELAMAT DATANG
                 </H1>
                 <h6>
-                  Sistem Penctatan Keuangan SMK Al Islam KaliJambe
+                  Sistem Pencatatan Keuangan SMK Al Islam KaliJambe
                 </h6>
                 <H3>
                   <?php echo $this->session->userdata('NamaUser'); ?>

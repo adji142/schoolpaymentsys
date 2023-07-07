@@ -402,7 +402,7 @@
                       LinkAccess = "";
 
                       if (cellInfo.data.TotalTagihan == 0) {
-                        LinkAccess = "<button class='btn btn-primary StartPay' onClick =Pembayaran('"+cellInfo.data.NoTransaksi+"') disabled>Bayar</button>";
+                        LinkAccess = "<button class='btn btn-success StartPay' onClick =Pembayaran('"+cellInfo.data.NoTransaksi+"') disabled>Lunas</button>";
                       }
                       else{
                         LinkAccess = "<button class='btn btn-primary StartPay' onClick =Pembayaran('"+cellInfo.data.NoTransaksi+"')>Bayar</button>";

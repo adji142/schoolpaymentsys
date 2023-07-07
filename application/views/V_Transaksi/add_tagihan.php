@@ -25,7 +25,7 @@
               </div>
               <div class="col-md-3 col-sm-12  form-group">
                 Tgl. Transaksi
-                <input type="date" id="TglTransaksi" name="TglTransaksi" class="form-control">
+                <input type="date" id="TglTransaksi" name="TglTransaksi" class="form-control" placeholder="DD-MM-YYYY">
                 <!-- <span class="tooltiptext">Tooltip text</span> -->
               </div>
               <div class="col-md-7 col-sm-12  form-group">
