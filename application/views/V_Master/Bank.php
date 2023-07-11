@@ -58,6 +58,40 @@
                     </div>
                   </div>
                   <div class="item form-group">
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Pos Penambah Kas <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 ">
+                      <select id="increaseAccount" name="increaseAccount" class="form-control">
+                        <option value="">Pilih Pos Penambah Kas..</option>
+                        <?php
+                          $rs = $this->ModelsExecuteMaster->FindData(array('JenisPos'=>1),'tposkeuangan')->result();
+
+                          foreach ($rs as $key) {
+                            echo "<option value = '".$key->KodePosKeuangan."'>".$key->NamaPos."</option>";
+                          }
+                        ?>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="item form-group">
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Pos Pengurang Kas <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 ">
+                      <select id="decreaseAccount" name="decreaseAccount" class="form-control">
+                      <option value="">Pilih Pos Pengurang Kas..</option>
+                      <?php
+                        $rs = $this->ModelsExecuteMaster->FindData(array('JenisPos'=>0),'tposkeuangan')->result();
+
+                        foreach ($rs as $key) {
+                          echo "<option value = '".$key->KodePosKeuangan."'>".$key->NamaPos."</option>";
+                        }
+                      ?>
+                    </select>
+                    </div>
+                  </div>
+                
+                  <div class="item form-group">
                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Alamat Penerbit <span class="required">*</span>
                     </label>
                     <div class="col-md-6 col-sm-6 ">
@@ -156,6 +190,8 @@
                 $('#NoRekening').val(v.NoRekening);
                 $('#NamaBank').val(v.NamaBank);
                 $('#AlamatPenerbit').val(v.AlamatPenerbit);
+                $('#increaseAccount').val(v.increaseAccount);
+                $('#decreaseAccount').val(v.decreaseAccount);
                 // $('#Nilai').val(v.Nilai);
 
                 $('#formtype').val("edit");

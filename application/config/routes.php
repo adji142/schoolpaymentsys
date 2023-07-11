@@ -153,6 +153,7 @@ $route['tagihan'] = 'Home/tagihansiswa';
 $route['addtagihan'] = 'Home/tambahtagihan';
 $route['pembayaran'] = 'Home/pembayaran';
 $route['bukukas'] = 'Home/bukukas';
+$route['bukubank'] = 'Home/bukubank';
 // Laporan
 $route['buktibayar/(:num)'] = 'Home/rptbuktibayar/$1';
 $route['tagihansiswa'] = 'Home/rpttagihansiswa';

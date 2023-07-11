@@ -185,6 +185,11 @@
             },
             columns: [
                 {
+                    dataField: "id",
+                    caption: "ID",
+                    allowEditing:false
+                },
+                {
                     dataField: "NamaKelas",
                     caption: "Nama Kelas",
                     allowEditing:false

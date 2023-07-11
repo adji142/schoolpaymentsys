@@ -166,6 +166,10 @@ class home extends CI_Controller {
 	{
 		$this->load->view('V_Transaksi/view_bukukas');
 	}
+	public function bukubank()
+	{
+		$this->load->view('V_Transaksi/view_bukubank');
+	}
 	// TRX
 	public function rptbuktibayar($value)
 	{

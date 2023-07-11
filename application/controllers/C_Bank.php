@@ -33,15 +33,20 @@
 		{
 			$data = array('success' => false ,'message'=>array(),'data'=>array());
 
-			$NoRekening 	= $this->input->post('NoRekening');
-			$NamaBank	 	= $this->input->post('NamaBank');
-			$AlamatPenerbit = $this->input->post('AlamatPenerbit');
+			$NoRekening 		= $this->input->post('NoRekening');
+			$NamaBank	 		= $this->input->post('NamaBank');
+			$AlamatPenerbit 	= $this->input->post('AlamatPenerbit');
+			$increaseAccount 	= $this->input->post('increaseAccount');
+			$decreaseAccount 	= $this->input->post('decreaseAccount');
+
 			$formtype 		= $this->input->post('formtype');
 
 			$param = array(
 				'NoRekening'		=> $NoRekening,
 				'NamaBank'			=> $NamaBank,
-				'AlamatPenerbit'	=> $AlamatPenerbit
+				'AlamatPenerbit'	=> $AlamatPenerbit,
+				'increaseAccount'	=> $increaseAccount,
+				'decreaseAccount'	=> $decreaseAccount
 			);
 
 			$rs;

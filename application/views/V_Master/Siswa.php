@@ -4,59 +4,57 @@
     $active = 'dashboard';
 ?>
 <!-- page content -->
-        <div class="right_col" role="main">
-          <div class="">
+  <div class="right_col" role="main">
+    <div class="">
 
-            <div class="clearfix"></div>
+      <div class="clearfix"></div>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12  ">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Siswa</h2>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <div class="row">
-                      <div class="col-md-3 col-sm-12  form-group">
-                        Jurusan
-                        <select id="Jurusan" name="Jurusan" class="form-control">
-                          <option value="">Pilih Jurusan..</option>
-                          <?php
-                            $rs = $this->ModelsExecuteMaster->GetData('tjurusan')->result();
+      <div class="row">
+        <div class="col-md-12 col-sm-12  ">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Siswa</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <div class="row">
+                <div class="col-md-3 col-sm-12  form-group">
+                  Jurusan
+                  <select id="Jurusan" name="Jurusan" class="form-control">
+                    <option value="">Pilih Jurusan..</option>
+                    <?php
+                      $rs = $this->ModelsExecuteMaster->GetData('tjurusan')->result();
 
-                            foreach ($rs as $key) {
-                              echo "<option value = '".$key->id."'>".$key->NamaJurusan."</option>";
-                            }
-                          ?>
-                        </select>
-                      </div>
+                      foreach ($rs as $key) {
+                        echo "<option value = '".$key->id."'>".$key->NamaJurusan."</option>";
+                      }
+                    ?>
+                  </select>
+                </div>
 
-                      <div class="col-md-3 col-sm-12  form-group">
-                        Kelas
-                        <select id="Kelas" name="Kelas" class="form-control">
-                          <option value="">Pilih Kelas..</option>
-                          <?php
-                            $rs = $this->ModelsExecuteMaster->GetData('tkelas')->result();
+                <div class="col-md-3 col-sm-12  form-group">
+                  Kelas
+                  <select id="Kelas" name="Kelas" class="form-control">
+                    <option value="">Pilih Kelas..</option>
+                    <?php
+                      $rs = $this->ModelsExecuteMaster->GetData('tkelas')->result();
 
-                            foreach ($rs as $key) {
-                              echo "<option value = '".$key->id."'>".$key->NamaKelas."</option>";
-                            }
-                          ?>
-                        </select>
-                      </div>
-                      <div class="col-md-4 col-sm-12  form-group">
-                        <!-- <input type="text" placeholder="NIK / Nama" class="form-control"> -->
-                        <br>
-                        <button class="btn btn-primary" id="btSearch">Cari Data</button>
-                        <button class="btn btn-warning" id="btNaikKelas">Naik Kelas</button>
-                      </div>
-                      <div class="dx-viewport demo-container">
-                        <div id="data-grid-demo">
-                          <div id="gridContainer">
-                          </div>
-                        </div>
-                      </div>
+                      foreach ($rs as $key) {
+                        echo "<option value = '".$key->id."'>".$key->NamaKelas."</option>";
+                      }
+                    ?>
+                  </select>
+                </div>
+                <div class="col-md-4 col-sm-12  form-group">
+                  <!-- <input type="text" placeholder="NIK / Nama" class="form-control"> -->
+                  <br>
+                  <button class="btn btn-primary" id="btSearch">Cari Data</button>
+                  <button class="btn btn-warning" id="btNaikKelas">Naik Kelas</button>
+                  <button class="btn btn-success" id="btImport">Import</button>
+                </div>
+                <div class="dx-viewport demo-container">
+                  <div id="data-grid-demo">
+                    <div id="gridContainer">
                     </div>
                   </div>
                 </div>
@@ -64,225 +62,260 @@
             </div>
           </div>
         </div>
-        <!-- /page content -->
+      </div>
+    </div>
+  </div>
+  <!-- /page content -->
 
-        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modal_">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modal_">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
 
-              <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Modal Siswa</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                </button>
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Modal Siswa</h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="post_" data-parsley-validate class="form-horizontal form-label-left">
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">NIS <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <input type="text" name="NIS" id="NIS" required="" placeholder="NIS" class="form-control ">
               </div>
-              <div class="modal-body">
-                <form id="post_" data-parsley-validate class="form-horizontal form-label-left">
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">NIS <span class="required">*</span>
-                    </label>
-                    <div class="col-md-6 col-sm-6 ">
-                      <input type="text" name="NIS" id="NIS" required="" placeholder="NIS" class="form-control ">
-                    </div>
-                  </div>
+            </div>
 
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Nama Siswa <span class="required">*</span>
-                    </label>
-                    <div class="col-md-6 col-sm-6 ">
-                      <input type="text" name="NamaSiswa" id="NamaSiswa" required="" placeholder="Nama Siswa" class="form-control ">
-                      <input type="hidden" name="formtype" id="formtype" value="add">
-                    </div>
-                  </div>
-
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Alamat Siswa <span class="required">*</span>
-                    </label>
-                    <div class="col-md-6 col-sm-6 ">
-                      <!-- <input type="text" name="AlamatSiswa" id="Alamat Siswa" required="" placeholder="Alamat Siswa" class="form-control "> -->
-                      <textarea class="form-control" rows="3" placeholder="Alamat SIswa" name="AlamatSiswa" id="AlamatSiswa"></textarea>
-                    </div>
-                  </div>
-
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Nama Wali <span class="required">*</span>
-                    </label>
-                    <div class="col-md-6 col-sm-6 ">
-                      <input type="text" name="NamaWali" id="NamaWali" required="" placeholder="Nama Wali" class="form-control ">
-                    </div>
-                  </div>
-
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Kelas <span class="required">*</span>
-                    </label>
-                    <div class="col-md-6 col-sm-6 ">
-                      <select class="form-control " name="Kelas" id="Kelas">
-                        <option value="">Pilih Kelas</option>
-                        <?php
-                          $rs = $this->ModelsExecuteMaster->GetData('tkelas')->result();
-
-                          foreach ($rs as $key) {
-                            echo "<option value = '".$key->id."'>".$key->NamaKelas."</option>";
-                          }
-                        ?>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Jurusan <span class="required">*</span>
-                    </label>
-                    <div class="col-md-6 col-sm-6 ">
-                      <select class="form-control " name="Jurusan" id="Jurusan">
-                        <option value="">Pilih Jurusan</option>
-                        <?php
-                          $rs = $this->ModelsExecuteMaster->GetData('tjurusan')->result();
-
-                          foreach ($rs as $key) {
-                            echo "<option value = '".$key->id."'>".$key->NamaJurusan."</option>";
-                          }
-                        ?>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Tempat Lahir
-                    </label>
-                    <div class="col-md-6 col-sm-6 ">
-                      <input type="text" name="TempatLahir" id="TempatLahir" placeholder="Tempat Lahir" class="form-control ">
-                    </div>
-                  </div>
-
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Tanggal Lahir
-                    </label>
-                    <div class="col-md-6 col-sm-6 ">
-                      <input type="date" name="TglLahir" id="TglLahir" placeholder="Tempat Lahir" class="date-picker form-control ">
-                    </div>
-                  </div>
-
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">No.Tlp Siswa(WhatsApp)
-                    </label>
-                    <div class="col-md-6 col-sm-6 ">
-                      <input type="text" name="NoTlpSiswa" id="NoTlpSiswa" placeholder="No.Tlp Siswa(WhatsApp)" class="form-control ">
-                    </div>
-                  </div>
-
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">No.Tlp Wali(WhatsApp)
-                    </label>
-                    <div class="col-md-6 col-sm-6 ">
-                      <input type="text" name="NoTlpWali" id="NoTlpWali" placeholder="No.Tlp Wali(WhatsApp)" class="form-control ">
-                    </div>
-                  </div>
-
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Email
-                    </label>
-                    <div class="col-md-6 col-sm-6 ">
-                      <input type="text" name="Email" id="Email" placeholder="Email" class="form-control ">
-                    </div>
-                  </div>
-
-                  <div class="item form-group">
-                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Angkatan <span class="required">*</span>
-                    </label>
-                    <div class="col-md-6 col-sm-6 ">
-                      <select class="form-control " name="TahunAngkatan" id="TahunAngkatan">
-                        <option value="">Pilih Angkatan</option>
-                        <div id="tahunajaran"></div>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="item" form-group>
-                    <button class="btn btn-primary" id="btn_Save">Save</button>
-                  </div>
-                </form>
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Nama Siswa <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <input type="text" name="NamaSiswa" id="NamaSiswa" required="" placeholder="Nama Siswa" class="form-control ">
+                <input type="hidden" name="formtype" id="formtype" value="add">
               </div>
-              <!-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                
-              </div> -->
+            </div>
 
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Alamat Siswa <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <!-- <input type="text" name="AlamatSiswa" id="Alamat Siswa" required="" placeholder="Alamat Siswa" class="form-control "> -->
+                <textarea class="form-control" rows="3" placeholder="Alamat SIswa" name="AlamatSiswa" id="AlamatSiswa"></textarea>
+              </div>
+            </div>
+
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Nama Wali <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <input type="text" name="NamaWali" id="NamaWali" required="" placeholder="Nama Wali" class="form-control ">
+              </div>
+            </div>
+
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Kelas <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <select class="form-control " name="Kelas" id="Kelas">
+                  <option value="">Pilih Kelas</option>
+                  <?php
+                    $rs = $this->ModelsExecuteMaster->GetData('tkelas')->result();
+
+                    foreach ($rs as $key) {
+                      echo "<option value = '".$key->id."'>".$key->NamaKelas."</option>";
+                    }
+                  ?>
+                </select>
+              </div>
+            </div>
+
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Jurusan <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <select class="form-control " name="Jurusan" id="Jurusan">
+                  <option value="">Pilih Jurusan</option>
+                  <?php
+                    $rs = $this->ModelsExecuteMaster->GetData('tjurusan')->result();
+
+                    foreach ($rs as $key) {
+                      echo "<option value = '".$key->id."'>".$key->NamaJurusan."</option>";
+                    }
+                  ?>
+                </select>
+              </div>
+            </div>
+
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Tempat Lahir
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <input type="text" name="TempatLahir" id="TempatLahir" placeholder="Tempat Lahir" class="form-control ">
+              </div>
+            </div>
+
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Tanggal Lahir
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <input type="date" name="TglLahir" id="TglLahir" placeholder="Tempat Lahir" class="date-picker form-control ">
+              </div>
+            </div>
+
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">No.Tlp Siswa(WhatsApp)
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <input type="text" name="NoTlpSiswa" id="NoTlpSiswa" placeholder="No.Tlp Siswa(WhatsApp)" class="form-control ">
+              </div>
+            </div>
+
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">No.Tlp Wali(WhatsApp)
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <input type="text" name="NoTlpWali" id="NoTlpWali" placeholder="No.Tlp Wali(WhatsApp)" class="form-control ">
+              </div>
+            </div>
+
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Email
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <input type="text" name="Email" id="Email" placeholder="Email" class="form-control ">
+              </div>
+            </div>
+
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Angkatan <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <select class="form-control " name="TahunAngkatan" id="TahunAngkatan">
+                  <option value="">Pilih Angkatan</option>
+                  <div id="tahunajaran"></div>
+                </select>
+              </div>
+            </div>
+
+            <div class="item" form-group>
+              <button class="btn btn-primary" id="btn_Save">Save</button>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          
+        </div> -->
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modalNaikKelas">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Modal Naik Kelas</h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="item form-group">
+            <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Jurusan <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 ">
+              <select class="form-control " name="NaikJurusan" id="NaikJurusan">
+                <option value="">Pilih Jurusan</option>
+                <?php
+                  $rs = $this->ModelsExecuteMaster->GetData('tjurusan')->result();
+
+                  foreach ($rs as $key) {
+                    echo "<option value = '".$key->id."'>".$key->NamaJurusan."</option>";
+                  }
+                ?>
+              </select>
             </div>
           </div>
-        </div>
 
-        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modalNaikKelas">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+          <div class="item form-group">
+            <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Kelas <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 ">
+              <select class="form-control " name="KelasFrom" id="KelasFrom">
+                <option value="">Pilih Kelas</option>
+                <?php
+                  $rs = $this->ModelsExecuteMaster->GetData('tkelas')->result();
 
-              <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Modal Naik Kelas</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="item form-group">
-                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Jurusan <span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 ">
-                    <select class="form-control " name="NaikJurusan" id="NaikJurusan">
-                      <option value="">Pilih Jurusan</option>
-                      <?php
-                        $rs = $this->ModelsExecuteMaster->GetData('tjurusan')->result();
-
-                        foreach ($rs as $key) {
-                          echo "<option value = '".$key->id."'>".$key->NamaJurusan."</option>";
-                        }
-                      ?>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="item form-group">
-                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Kelas <span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 ">
-                    <select class="form-control " name="KelasFrom" id="KelasFrom">
-                      <option value="">Pilih Kelas</option>
-                      <?php
-                        $rs = $this->ModelsExecuteMaster->GetData('tkelas')->result();
-
-                        foreach ($rs as $key) {
-                          echo "<option value = '".$key->id."'>".$key->NamaKelas."</option>";
-                        }
-                      ?>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="item form-group">
-                  <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Naik ke Kelas <span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 ">
-                    <select class="form-control " name="KelasTo" id="KelasTo">
-                      <option value="">Pilih Kelas</option>
-                      <?php
-                        $rs = $this->ModelsExecuteMaster->GetData('tkelas')->result();
-
-                        foreach ($rs as $key) {
-                          echo "<option value = '".$key->id."'>".$key->NamaKelas."</option>";
-                        }
-                      ?>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="item" form-group>
-                  <button class="btn btn-primary" id="btn_SaveNaikKelas">Save</button>
-                </div>
-              </div>
-              <!-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                
-              </div> -->
-
+                  foreach ($rs as $key) {
+                    echo "<option value = '".$key->id."'>".$key->NamaKelas."</option>";
+                  }
+                ?>
+              </select>
             </div>
           </div>
+
+          <div class="item form-group">
+            <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Naik ke Kelas <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 ">
+              <select class="form-control " name="KelasTo" id="KelasTo">
+                <option value="">Pilih Kelas</option>
+                <?php
+                  $rs = $this->ModelsExecuteMaster->GetData('tkelas')->result();
+
+                  foreach ($rs as $key) {
+                    echo "<option value = '".$key->id."'>".$key->NamaKelas."</option>";
+                  }
+                ?>
+              </select>
+            </div>
+          </div>
+
+          <div class="item" form-group>
+            <button class="btn btn-primary" id="btn_SaveNaikKelas">Save</button>
+          </div>
         </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          
+        </div> -->
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modalImport">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Modal Import</h4>
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form data-parsley-validate class="form-horizontal form-label-left" action="<?php echo base_url().'C_Siswa/Import' ?>" method="post" enctype="multipart/form-data">
+            <div class="item form-group">
+              <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">File <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 ">
+                <input type="file" name="fileExcel" id="fileExcel">
+              </div>
+            </div>
+            <div class="item" form-group>
+              <button class="btn btn-primary" id="btn_Save">Save</button>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          
+        </div> -->
+
+      </div>
+    </div>
+  </div>
 <?php
   require_once(APPPATH."views/parts/Footer.php");
 ?>
@@ -380,6 +413,10 @@
         $('#btNaikKelas').click(function () {
           $('#modalNaikKelas').modal('show');
         });
+
+        $('#btImport').click(function () {
+          $('#modalImport').modal('show');
+        })
 
         $('#btn_SaveNaikKelas').click(function () {
           $('#btn_SaveNaikKelas').text('Tunggu Sebentar.....');
