@@ -13,23 +13,27 @@
 
 		public function bk()
 		{
-			$FileName = $this->input->post('FileName');
-			$database = $this->db->database;
-			$baseDir = 'home/smkalisk/public_html/epaysys/Assets/backup';
+			try {
+				$FileName = $this->input->post('FileName');
+				$database = $this->db->database;
+				$baseDir = 'home/smkalisk/public_html/epaysys/Assets/backup';
 
-			$backup_file = $FileName . '.sql';
-			$prefs = array(
-		        'ignore'        => array(),
-		        'format'        => 'txt',
-		        'filename'      => $backup_file,
-		        'add_drop'      => TRUE,
-		        'add_insert'    => TRUE,
-		        'newline'       => "\n"
-			);
-			$this->load->dbutil();
-			$backup = $this->dbutil->backup($prefs);
-			$this->load->helper('file');
-			write_file($baseDir.$backup_file, $backup);
+				$backup_file = $FileName . '.sql';
+				$prefs = array(
+			        'ignore'        => array(),
+			        'format'        => 'txt',
+			        'filename'      => $backup_file,
+			        'add_drop'      => TRUE,
+			        'add_insert'    => TRUE,
+			        'newline'       => "\n"
+				);
+				$this->load->dbutil();
+				$backup = $this->dbutil->backup($prefs);
+				$this->load->helper('file');
+				write_file($baseDir.$backup_file, $backup);
+			} catch (Exception $e) {
+				echo $e->getMessage();
+			}
 
 		}
 
