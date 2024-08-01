@@ -52,7 +52,7 @@
               </center>
             </div>
             <form id="loginform">
-              <h1>Login Form</h1>
+              <h1>Silahkan Login</h1>
               <div>
                 <input type="text" class="form-control" placeholder="Username" required="" id="username" name="username"/>
                 <input type="hidden" name="androidid" id="androidid" value="admin">
